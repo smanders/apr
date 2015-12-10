@@ -19,6 +19,7 @@ PROJECT(APR C)
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
+INCLUDE(flags OPTIONAL)
 OPTION(APR_INSTALL_PRIVATE_H  "Install selected private .h files (for httpd)"  OFF)
 OPTION(APR_HAVE_IPV6        "IPv6 support"                 ON)
 OPTION(INSTALL_PDB          "Install .pdb files (if generated)"  ON)
@@ -26,6 +27,10 @@ OPTION(APR_BUILD_TESTAPR    "Build the test suite"         OFF)
 OPTION(TEST_STATIC_LIBS     "Test programs use APR static libraries instead of shared libraries?" OFF)
 SET(MIN_WINDOWS_VER             "Vista" 
     CACHE STRING "Minimum Windows version")
+
+if(TEST_STATIC_LIBS)
+  OPTION(BUILD_ONLY_STATIC_LIBS  "Build only static libraries" ON)
+endif()
 
 # create 1-or-0 representation of feature tests for apr.h
 
@@ -76,11 +81,13 @@ SET(APR_INCLUDE_DIRECTORIES
   ${CMAKE_CURRENT_SOURCE_DIR}/include/private
 )
 
+if(WIN32)
 SET(APR_SYSTEM_LIBS
   ws2_32
   mswsock
   rpcrt4
 )
+endif()
 
 INCLUDE_DIRECTORIES(${APR_INCLUDE_DIRECTORIES})
 
@@ -255,12 +262,14 @@ SET(install_targets)
 SET(install_bin_pdb)
 
 # libapr-1 is shared, apr-1 is static
+if(NOT BUILD_ONLY_STATIC_LIBS)
 ADD_LIBRARY(libapr-1 SHARED ${APR_SOURCES} ${APR_PUBLIC_HEADERS_GENERATED} libapr.rc)
 SET(install_targets ${install_targets} libapr-1)
 SET(install_bin_pdb ${install_bin_pdb} ${PROJECT_BINARY_DIR}/libapr-1.pdb)
 TARGET_LINK_LIBRARIES(libapr-1 ${APR_SYSTEM_LIBS})
 SET_TARGET_PROPERTIES(libapr-1 PROPERTIES COMPILE_DEFINITIONS "APR_DECLARE_EXPORT;WINNT")
 ADD_DEPENDENCIES(libapr-1 test_char_header)
+endif()
 
 ADD_LIBRARY(apr-1 STATIC ${APR_SOURCES} ${APR_PUBLIC_HEADERS_GENERATED})
 SET(install_targets ${install_targets} apr-1)
@@ -269,9 +278,11 @@ SET_TARGET_PROPERTIES(apr-1 PROPERTIES COMPILE_DEFINITIONS "APR_DECLARE_STATIC;W
 ADD_DEPENDENCIES(apr-1 test_char_header)
 
 # libaprapp-1 and aprapp-1 are static
+if(NOT BUILD_ONLY_STATIC_LIBS)
 ADD_LIBRARY(libaprapp-1 STATIC misc/win32/apr_app.c misc/win32/internal.c ${APR_PUBLIC_HEADERS_GENERATED})
 SET(install_targets ${install_targets} libaprapp-1)
 SET_TARGET_PROPERTIES(libaprapp-1 PROPERTIES COMPILE_DEFINITIONS "APR_APP;WINNT")
+endif()
 
 ADD_LIBRARY(aprapp-1 STATIC misc/win32/apr_app.c misc/win32/internal.c ${APR_PUBLIC_HEADERS_GENERATED})
 SET(install_targets ${install_targets} aprapp-1)
@@ -381,11 +392,12 @@ ENDIF (APR_BUILD_TESTAPR)
 
 # Installation
 
-INSTALL(TARGETS ${install_targets}
+INSTALL(TARGETS ${install_targets} EXPORT apr-targets
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
        )
+INSTALL(EXPORT apr-targets DESTINATION lib/cmake)
 
 IF(INSTALL_PDB)
   INSTALL(FILES ${install_bin_pdb}
@@ -393,7 +405,7 @@ IF(INSTALL_PDB)
           CONFIGURATIONS RelWithDebInfo Debug)
 ENDIF()
 
-INSTALL(FILES ${APR_PUBLIC_HEADERS_STATIC} ${APR_PUBLIC_HEADERS_GENERATED} DESTINATION include)
+INSTALL(FILES ${APR_PUBLIC_HEADERS_STATIC} ${APR_PUBLIC_HEADERS_GENERATED} DESTINATION include/apr)
 IF(APR_INSTALL_PRIVATE_H)
   # Kludges for unexpected dependencies of httpd 2.x, not installed by default
   SET(APR_PRIVATE_H_FOR_HTTPD
@@ -402,8 +414,8 @@ IF(APR_INSTALL_PRIVATE_H)
     include/arch/win32/apr_arch_utf8.h
     include/arch/win32/apr_private.h
     )
-  INSTALL(FILES ${APR_PRIVATE_H_FOR_HTTPD} DESTINATION include/arch/win32)
-  INSTALL(FILES include/arch/apr_private_common.h DESTINATION include/arch)
+  INSTALL(FILES ${APR_PRIVATE_H_FOR_HTTPD} DESTINATION include/apr/arch/win32)
+  INSTALL(FILES include/arch/apr_private_common.h DESTINATION include/apr/arch)
 ENDIF()
 
 STRING(TOUPPER "${CMAKE_BUILD_TYPE}" buildtype)
