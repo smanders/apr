@@ -980,7 +980,7 @@
 
 #undef APR_OFF_T_STRFN
 #define APR_OFF_T_STRFN @APR_INT64_STRFN@
- 
+
 
 #@DEFINE_SETPGRP_VOID@ SETPGRP_VOID
 #ifdef __DARWIN_UNIX03
@@ -988,7 +988,7 @@
 #else
 /* #undef SETPGRP_VOID */
 #endif
- 
+
 #endif /* DARWIN_10 */
 
 /*

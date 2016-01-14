@@ -65,7 +65,7 @@ endmacro()
 ##########
 macro(check_symbol_exists_define01 sym inc var)
   check_symbol_exists(${sym} "${inc}" ${var})
-  set_define(${var} 1) 
+  set_define(${var} 1)
 endmacro()
 ##########
 macro(check_library_exists_concat lib symbol var)
