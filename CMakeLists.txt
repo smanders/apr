@@ -60,11 +60,10 @@ elseif(UNIX)
 endif()
 
 ADD_EXECUTABLE(gen_test_char tools/gen_test_char.c)
-GET_TARGET_PROPERTY(GEN_TEST_CHAR_EXE gen_test_char LOCATION)
 ADD_CUSTOM_COMMAND(
   COMMENT "Generating character tables, apr_escape_test_char.h, for current locale"
   DEPENDS gen_test_char
-  COMMAND ${GEN_TEST_CHAR_EXE} > ${PROJECT_BINARY_DIR}/apr_escape_test_char.h
+  COMMAND $<TARGET_FILE:gen_test_char> > ${PROJECT_BINARY_DIR}/apr_escape_test_char.h
   OUTPUT ${PROJECT_BINARY_DIR}/apr_escape_test_char.h
 )
 ADD_CUSTOM_TARGET(
