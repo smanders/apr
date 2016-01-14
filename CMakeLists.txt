@@ -25,8 +25,10 @@ OPTION(APR_HAVE_IPV6        "IPv6 support"                 ON)
 OPTION(INSTALL_PDB          "Install .pdb files (if generated)"  ON)
 OPTION(APR_BUILD_TESTAPR    "Build the test suite"         OFF)
 OPTION(TEST_STATIC_LIBS     "Test programs use APR static libraries instead of shared libraries?" OFF)
+if(WIN32)
 SET(MIN_WINDOWS_VER             "Vista" 
     CACHE STRING "Minimum Windows version")
+endif(WIN32)
 
 if(TEST_STATIC_LIBS)
   OPTION(BUILD_ONLY_STATIC_LIBS  "Build only static libraries" ON)
@@ -40,6 +42,7 @@ IF(APR_HAVE_IPV6)
   SET(apr_have_ipv6_10 1)
 ENDIF()
 
+if(WIN32)
 IF("${MIN_WINDOWS_VER}" STREQUAL "")
   SET(win32_winnt_str "0x0600")
 ELSEIF(${MIN_WINDOWS_VER} STREQUAL "Vista")
@@ -52,6 +55,7 @@ ENDIF()
 
 CONFIGURE_FILE(include/apr.hwc
                ${PROJECT_BINARY_DIR}/apr.h)
+endif(WIN32)
 
 ADD_EXECUTABLE(gen_test_char tools/gen_test_char.c)
 GET_TARGET_PROPERTY(GEN_TEST_CHAR_EXE gen_test_char LOCATION)
@@ -76,18 +80,19 @@ ADD_CUSTOM_TARGET(
 SET(APR_INCLUDE_DIRECTORIES
   ${PROJECT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/include
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/arch/win32
   ${CMAKE_CURRENT_SOURCE_DIR}/include/arch/unix
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/private
 )
 
 if(WIN32)
+LIST(APPEND APR_INCLUDE_DIRECTORIES
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/arch/win32
+)
 SET(APR_SYSTEM_LIBS
   ws2_32
   mswsock
   rpcrt4
 )
-endif()
+endif(WIN32)
 
 INCLUDE_DIRECTORIES(${APR_INCLUDE_DIRECTORIES})
 
@@ -134,6 +139,7 @@ SET(APR_PUBLIC_HEADERS_GENERATED
   ${PROJECT_BINARY_DIR}/apr.h
 )
 
+if(WIN32)
 SET(APR_SOURCES
   atomic/win32/apr_atomic.c
   dso/win32/dso.c
@@ -208,6 +214,7 @@ SET(APR_SOURCES
   user/win32/groupinfo.c
   user/win32/userinfo.c
 )
+endif(WIN32)
 
 SET(APR_TEST_SOURCES
   test/abts.c
@@ -277,6 +284,7 @@ TARGET_LINK_LIBRARIES(apr-1 ${APR_SYSTEM_LIBS})
 SET_TARGET_PROPERTIES(apr-1 PROPERTIES COMPILE_DEFINITIONS "APR_DECLARE_STATIC;WINNT")
 ADD_DEPENDENCIES(apr-1 test_char_header)
 
+if(WIN32)
 # libaprapp-1 and aprapp-1 are static
 if(NOT BUILD_ONLY_STATIC_LIBS)
 ADD_LIBRARY(libaprapp-1 STATIC misc/win32/apr_app.c misc/win32/internal.c ${APR_PUBLIC_HEADERS_GENERATED})
@@ -287,6 +295,7 @@ endif()
 ADD_LIBRARY(aprapp-1 STATIC misc/win32/apr_app.c misc/win32/internal.c ${APR_PUBLIC_HEADERS_GENERATED})
 SET(install_targets ${install_targets} aprapp-1)
 SET_TARGET_PROPERTIES(aprapp-1 PROPERTIES COMPILE_DEFINITIONS "APR_DECLARE_STATIC;APR_APP;WINNT")
+endif(WIN32)
 
 IF(APR_BUILD_TESTAPR)
   ENABLE_TESTING()
@@ -314,8 +323,10 @@ IF(APR_BUILD_TESTAPR)
   ENDIF()
 
   ADD_EXECUTABLE(testapp test/testapp.c)
+  if(WIN32)
   TARGET_LINK_LIBRARIES(testapp ${whichapr} ${whichaprapp} ${APR_SYSTEM_LIBS})
   SET_TARGET_PROPERTIES(testapp PROPERTIES LINK_FLAGS /entry:wmainCRTStartup)
+  endif(WIN32)
   IF(apiflag)
     SET_TARGET_PROPERTIES(testapp PROPERTIES COMPILE_FLAGS ${apiflag})
   ENDIF()
@@ -330,12 +341,14 @@ IF(APR_BUILD_TESTAPR)
 
   ADD_LIBRARY(mod_test MODULE test/mod_test.c)
   TARGET_LINK_LIBRARIES(mod_test ${whichapr} ${APR_SYSTEM_LIBS})
+  if(WIN32)
   SET_PROPERTY(TARGET mod_test APPEND PROPERTY LINK_FLAGS /export:print_hello)
   # nasty work-around for difficulties adding more than one additional flag
   # (they get joined in a bad way behind the scenes)
   GET_PROPERTY(link_flags TARGET mod_test PROPERTY LINK_FLAGS)
   SET(link_flags "${link_flags} /export:count_reps")
   SET_TARGET_PROPERTIES(mod_test PROPERTIES LINK_FLAGS ${link_flags})
+  endif(WIN32)
   IF(apiflag)
     SET_TARGET_PROPERTIES(mod_test PROPERTIES COMPILE_FLAGS ${apiflag})
   ENDIF()
@@ -356,8 +369,10 @@ IF(APR_BUILD_TESTAPR)
     test/testshmproducer.c
     test/testshmconsumer.c
     test/tryread.c
-    test/internal/testucs.c
   )
+  if(WIN32)
+    list(APPEND single_source_programs test/internal/testucs.c)
+  endif(WIN32)
 
   FOREACH(sourcefile ${single_source_programs})
     STRING(REGEX REPLACE ".*/([^\\]+)\\.c" "\\1" proggie ${sourcefile})
@@ -429,7 +444,9 @@ MESSAGE(STATUS "  Install .pdb (if available)...... : ${INSTALL_PDB}")
 MESSAGE(STATUS "  Install prefix .................. : ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "  C compiler ...................... : ${CMAKE_C_COMPILER}")
 MESSAGE(STATUS "  IPv6 ............................ : ${APR_HAVE_IPV6}")
+if(WIN32)
 MESSAGE(STATUS "  Minimum Windows version ......... : ${MIN_WINDOWS_VER}")
+endif(WIN32)
 MESSAGE(STATUS "  Build test suite ................ : ${APR_BUILD_TESTAPR}")
 IF(TEST_STATIC_LIBS)
 MESSAGE(STATUS "    (testing static libraries)")
