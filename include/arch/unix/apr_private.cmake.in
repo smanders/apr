@@ -1,0 +1,999 @@
+/* include/arch/unix/apr_private.in.  Copied, modified from source tar.gz.  */
+
+#ifndef APR_PRIVATE_H
+#define APR_PRIVATE_H
+
+
+/* Define if building universal (internal helper macro) */
+#@DEFINE_AC_APPLE_UNIVERSAL_BUILD@ AC_APPLE_UNIVERSAL_BUILD
+
+/* Define if apr_allocator should use mmap */
+#@DEFINE_APR_ALLOCATOR_USES_MMAP@ APR_ALLOCATOR_USES_MMAP
+
+/* Define as function which can be used for conversion of strings to
+   apr_int64_t */
+#@DEFINE_APR_INT64_STRFN@ APR_INT64_STRFN @APR_INT64_STRFN@
+
+/* Define as function used for conversion of strings to apr_off_t */
+#@DEFINE_APR_OFF_T_STRFN@ APR_OFF_T_STRFN @APR_OFF_T_STRFN@
+
+/* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
+   systems. This function is required for `alloca.c' support on those systems.
+   */
+#@DEFINE_CRAY_STACKSEG_END@ CRAY_STACKSEG_END
+
+/* Define to 1 if using `alloca.c'. */
+#@DEFINE_C_ALLOCA@ C_ALLOCA
+
+/* Define to path of random device */
+#@DEFINE_DEV_RANDOM@ DEV_RANDOM "@DEV_RANDOM@"
+
+/* Define if struct dirent has an inode member */
+#@DEFINE_DIRENT_INODE@ DIRENT_INODE @DIRENT_INODE@
+
+/* Define if struct dirent has a d_type member */
+#@DEFINE_DIRENT_TYPE@ DIRENT_TYPE @DIRENT_TYPE@
+
+/* Define if DSO support uses dlfcn.h */
+#@DEFINE_DSO_USE_DLFCN@ DSO_USE_DLFCN
+
+/* Define if DSO support uses dyld.h */
+#@DEFINE_DSO_USE_DYLD@ DSO_USE_DYLD
+
+/* Define if DSO support uses shl_load */
+#@DEFINE_DSO_USE_SHL@ DSO_USE_SHL
+
+/* Define to list of paths to EGD sockets */
+#@DEFINE_EGD_DEFAULT_SOCKET@ EGD_DEFAULT_SOCKET
+
+/* Define if fcntl locks affect threads within the process */
+#@DEFINE_FCNTL_IS_GLOBAL@ FCNTL_IS_GLOBAL
+
+/* Define if fcntl returns EACCES when F_SETLK is already held */
+#@DEFINE_FCNTL_TRYACQUIRE_EACCES@ FCNTL_TRYACQUIRE_EACCES
+
+/* Define if flock locks affect threads within the process */
+#@DEFINE_FLOCK_IS_GLOBAL@ FLOCK_IS_GLOBAL
+
+/* Define if gethostbyaddr is thread safe */
+#@DEFINE_GETHOSTBYADDR_IS_THREAD_SAFE@ GETHOSTBYADDR_IS_THREAD_SAFE
+
+/* Define if gethostbyname is thread safe */
+#@DEFINE_GETHOSTBYNAME_IS_THREAD_SAFE@ GETHOSTBYNAME_IS_THREAD_SAFE
+
+/* Define if gethostbyname_r has the glibc style */
+#@DEFINE_GETHOSTBYNAME_R_GLIBC2@ GETHOSTBYNAME_R_GLIBC2
+
+/* Define if gethostbyname_r has the hostent_data for the third argument */
+#@DEFINE_GETHOSTBYNAME_R_HOSTENT_DATA@ GETHOSTBYNAME_R_HOSTENT_DATA
+
+/* Define if getservbyname is thread safe */
+#@DEFINE_GETSERVBYNAME_IS_THREAD_SAFE@ GETSERVBYNAME_IS_THREAD_SAFE
+
+/* Define if getservbyname_r has the glibc style */
+#@DEFINE_GETSERVBYNAME_R_GLIBC2@ GETSERVBYNAME_R_GLIBC2
+
+/* Define if getservbyname_r has the OSF/1 style */
+#@DEFINE_GETSERVBYNAME_R_OSF1@ GETSERVBYNAME_R_OSF1
+
+/* Define if getservbyname_r has the Solaris style */
+#@DEFINE_GETSERVBYNAME_R_SOLARIS@ GETSERVBYNAME_R_SOLARIS
+
+/* Define if accept4 function is supported */
+#@DEFINE_HAVE_ACCEPT4@ HAVE_ACCEPT4
+
+/* Define if async i/o supports message q's */
+#@DEFINE_HAVE_AIO_MSGQ@ HAVE_AIO_MSGQ
+
+/* Define to 1 if you have `alloca', as a function or macro. */
+#@DEFINE_HAVE_ALLOCA@ HAVE_ALLOCA
+
+/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
+   */
+#@DEFINE_HAVE_ALLOCA_H@ HAVE_ALLOCA_H
+
+/* Define to 1 if you have the <arpa/inet.h> header file. */
+#@DEFINE_HAVE_ARPA_INET_H@ HAVE_ARPA_INET_H
+
+/* Define if compiler provides atomic builtins */
+#@DEFINE_HAVE_ATOMIC_BUILTINS@ HAVE_ATOMIC_BUILTINS
+
+/* Define if BONE_VERSION is defined in sys/socket.h */
+#@DEFINE_HAVE_BONE_VERSION@ HAVE_BONE_VERSION
+
+/* Define to 1 if you have the <ByteOrder.h> header file. */
+#@DEFINE_HAVE_BYTEORDER_H@ HAVE_BYTEORDER_H
+
+/* Define to 1 if you have the `calloc' function. */
+#@DEFINE_HAVE_CALLOC@ HAVE_CALLOC
+
+/* Define to 1 if you have the <conio.h> header file. */
+#@DEFINE_HAVE_CONIO_H@ HAVE_CONIO_H
+
+/* Define to 1 if you have the `create_area' function. */
+#@DEFINE_HAVE_CREATE_AREA@ HAVE_CREATE_AREA
+
+/* Define to 1 if you have the `create_sem' function. */
+#@DEFINE_HAVE_CREATE_SEM@ HAVE_CREATE_SEM
+
+/* Define to 1 if you have the <crypt.h> header file. */
+#@DEFINE_HAVE_CRYPT_H@ HAVE_CRYPT_H
+
+/* Define to 1 if you have the <ctype.h> header file. */
+#@DEFINE_HAVE_CTYPE_H@ HAVE_CTYPE_H
+
+/* Define to 1 if you have the declaration of `sys_siglist', and to 0 if you
+   don't. */
+#define HAVE_DECL_SYS_SIGLIST @HAVE_DECL_SYS_SIGLIST@
+
+/* Define to 1 if you have the <dirent.h> header file. */
+#@DEFINE_HAVE_DIRENT_H@ HAVE_DIRENT_H
+
+/* Define to 1 if you have the <dir.h> header file. */
+#@DEFINE_HAVE_DIR_H@ HAVE_DIR_H
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#@DEFINE_HAVE_DLFCN_H@ HAVE_DLFCN_H
+
+/* Define to 1 if you have the <dl.h> header file. */
+#@DEFINE_HAVE_DL_H@ HAVE_DL_H
+
+/* Define if dup3 function is supported */
+#@DEFINE_HAVE_DUP3@ HAVE_DUP3
+
+/* Define if EGD is supported */
+#@DEFINE_HAVE_EGD@ HAVE_EGD
+
+/* Define if the epoll interface is supported */
+#@DEFINE_HAVE_EPOLL@ HAVE_EPOLL
+
+/* Define if epoll_create1 function is supported */
+#@DEFINE_HAVE_EPOLL_CREATE1@ HAVE_EPOLL_CREATE1
+
+/* Define to 1 if you have the <errno.h> header file. */
+#@DEFINE_HAVE_ERRNO_H@ HAVE_ERRNO_H
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#@DEFINE_HAVE_FCNTL_H@ HAVE_FCNTL_H
+
+/* Define to 1 if you have the `fdatasync' function. */
+#@DEFINE_HAVE_FDATASYNC@ HAVE_FDATASYNC
+
+/* Define to 1 if you have the `flock' function. */
+#@DEFINE_HAVE_FLOCK@ HAVE_FLOCK
+
+/* Define to 1 if you have the `fork' function. */
+#@DEFINE_HAVE_FORK@ HAVE_FORK
+
+/* Define if F_SETLK is defined in fcntl.h */
+#@DEFINE_HAVE_F_SETLK@ HAVE_F_SETLK
+
+/* Define if getaddrinfo accepts the AI_ADDRCONFIG flag */
+#@DEFINE_HAVE_GAI_ADDRCONFIG@ HAVE_GAI_ADDRCONFIG
+
+/* Define to 1 if you have the `gai_strerror' function. */
+#@DEFINE_HAVE_GAI_STRERROR@ HAVE_GAI_STRERROR
+
+/* Define if getaddrinfo exists and works well enough for APR */
+#@DEFINE_HAVE_GETADDRINFO@ HAVE_GETADDRINFO
+
+/* Define to 1 if you have the `getenv' function. */
+#@DEFINE_HAVE_GETENV@ HAVE_GETENV
+
+/* Define to 1 if you have the `getgrgid_r' function. */
+#@DEFINE_HAVE_GETGRGID_R@ HAVE_GETGRGID_R
+
+/* Define to 1 if you have the `getgrnam_r' function. */
+#@DEFINE_HAVE_GETGRNAM_R@ HAVE_GETGRNAM_R
+
+/* Define to 1 if you have the `gethostbyaddr_r' function. */
+#@DEFINE_HAVE_GETHOSTBYADDR_R@ HAVE_GETHOSTBYADDR_R
+
+/* Define to 1 if you have the `gethostbyname_r' function. */
+#@DEFINE_HAVE_GETHOSTBYNAME_R@ HAVE_GETHOSTBYNAME_R
+
+/* Define to 1 if you have the `getifaddrs' function. */
+#@DEFINE_HAVE_GETIFADDRS@ HAVE_GETIFADDRS
+
+/* Define if getnameinfo exists */
+#@DEFINE_HAVE_GETNAMEINFO@ HAVE_GETNAMEINFO
+
+/* Define to 1 if you have the `getpass' function. */
+#@DEFINE_HAVE_GETPASS@ HAVE_GETPASS
+
+/* Define to 1 if you have the `getpassphrase' function. */
+#@DEFINE_HAVE_GETPASSPHRASE@ HAVE_GETPASSPHRASE
+
+/* Define to 1 if you have the `getpwnam_r' function. */
+#@DEFINE_HAVE_GETPWNAM_R@ HAVE_GETPWNAM_R
+
+/* Define to 1 if you have the `getpwuid_r' function. */
+#@DEFINE_HAVE_GETPWUID_R@ HAVE_GETPWUID_R
+
+/* Define to 1 if you have the `getrlimit' function. */
+#@DEFINE_HAVE_GETRLIMIT@ HAVE_GETRLIMIT
+
+/* Define to 1 if you have the `getservbyname_r' function. */
+#@DEFINE_HAVE_GETSERVBYNAME_R@ HAVE_GETSERVBYNAME_R
+
+/* Define to 1 if you have the `gmtime_r' function. */
+#@DEFINE_HAVE_GMTIME_R@ HAVE_GMTIME_R
+
+/* Define to 1 if you have the <grp.h> header file. */
+#@DEFINE_HAVE_GRP_H@ HAVE_GRP_H
+
+/* Define if hstrerror is present */
+#@DEFINE_HAVE_HSTRERROR@ HAVE_HSTRERROR
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#@DEFINE_HAVE_INTTYPES_H@ HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <io.h> header file. */
+#@DEFINE_HAVE_IO_H@ HAVE_IO_H
+
+/* Define to 1 if you have the `isinf' function. */
+#@DEFINE_HAVE_ISINF@ HAVE_ISINF
+
+/* Define to 1 if you have the `isnan' function. */
+#@DEFINE_HAVE_ISNAN@ HAVE_ISNAN
+
+/* Define to 1 if you have the <kernel/OS.h> header file. */
+#@DEFINE_HAVE_KERNEL_OS_H@ HAVE_KERNEL_OS_H
+
+/* Define to 1 if you have the `kqueue' function. */
+#@DEFINE_HAVE_KQUEUE@ HAVE_KQUEUE
+
+/* Define to 1 if you have the <langinfo.h> header file. */
+#@DEFINE_HAVE_LANGINFO_H@ HAVE_LANGINFO_H
+
+/* Define to 1 if you have the `bsd' library (-lbsd). */
+#@DEFINE_HAVE_LIBBSD@ HAVE_LIBBSD
+
+/* Define to 1 if you have the `sendfile' library (-lsendfile). */
+#@DEFINE_HAVE_LIBSENDFILE@ HAVE_LIBSENDFILE
+
+/* Define to 1 if you have the `truerand' library (-ltruerand). */
+#@DEFINE_HAVE_LIBTRUERAND@ HAVE_LIBTRUERAND
+
+/* Define to 1 if you have the <limits.h> header file. */
+#@DEFINE_HAVE_LIMITS_H@ HAVE_LIMITS_H
+
+/* Define to 1 if you have the `localtime_r' function. */
+#@DEFINE_HAVE_LOCALTIME_R@ HAVE_LOCALTIME_R
+
+/* Define if LOCK_EX is defined in sys/file.h */
+#@DEFINE_HAVE_LOCK_EX@ HAVE_LOCK_EX
+
+/* Define to 1 if you have the <mach-o/dyld.h> header file. */
+#@DEFINE_HAVE_MACH_O_DYLD_H@ HAVE_MACH_O_DYLD_H
+
+/* Define to 1 if you have the <malloc.h> header file. */
+#@DEFINE_HAVE_MALLOC_H@ HAVE_MALLOC_H
+
+/* Define if MAP_ANON is defined in sys/mman.h */
+#@DEFINE_HAVE_MAP_ANON@ HAVE_MAP_ANON
+
+/* Define to 1 if you have the `memchr' function. */
+#@DEFINE_HAVE_MEMCHR@ HAVE_MEMCHR
+
+/* Define to 1 if you have the `memmove' function. */
+#@DEFINE_HAVE_MEMMOVE@ HAVE_MEMMOVE
+
+/* Define to 1 if you have the <memory.h> header file. */
+#@DEFINE_HAVE_MEMORY_H@ HAVE_MEMORY_H
+
+/* Define to 1 if you have the `mkstemp' function. */
+#@DEFINE_HAVE_MKSTEMP@ HAVE_MKSTEMP
+
+/* Define to 1 if you have the `mkstemp64' function. */
+#@DEFINE_HAVE_MKSTEMP64@ HAVE_MKSTEMP64
+
+/* Define to 1 if you have the `mmap' function. */
+#@DEFINE_HAVE_MMAP@ HAVE_MMAP
+
+/* Define to 1 if you have the `mmap64' function. */
+#@DEFINE_HAVE_MMAP64@ HAVE_MMAP64
+
+/* Define to 1 if you have the `munmap' function. */
+#@DEFINE_HAVE_MUNMAP@ HAVE_MUNMAP
+
+/* Define to 1 if you have the <netdb.h> header file. */
+#@DEFINE_HAVE_NETDB_H@ HAVE_NETDB_H
+
+/* Define to 1 if you have the <netinet/in.h> header file. */
+#@DEFINE_HAVE_NETINET_IN_H@ HAVE_NETINET_IN_H
+
+/* Define to 1 if you have the <netinet/sctp.h> header file. */
+#@DEFINE_HAVE_NETINET_SCTP_H@ HAVE_NETINET_SCTP_H
+
+/* Define to 1 if you have the <netinet/sctp_uio.h> header file. */
+#@DEFINE_HAVE_NETINET_SCTP_UIO_H@ HAVE_NETINET_SCTP_UIO_H
+
+/* Defined if netinet/tcp.h is present */
+#@DEFINE_HAVE_NETINET_TCP_H@ HAVE_NETINET_TCP_H
+
+/* Define to 1 if you have the <net/errno.h> header file. */
+#@DEFINE_HAVE_NET_ERRNO_H@ HAVE_NET_ERRNO_H
+
+/* Define to 1 if you have the `nl_langinfo' function. */
+#@DEFINE_HAVE_NL_LANGINFO@ HAVE_NL_LANGINFO
+
+/* Define to 1 if you have the <os2.h> header file. */
+#@DEFINE_HAVE_OS2_H@ HAVE_OS2_H
+
+/* Define to 1 if you have the <osreldate.h> header file. */
+#@DEFINE_HAVE_OSRELDATE_H@ HAVE_OSRELDATE_H
+
+/* Define to 1 if you have the <OS.h> header file. */
+#@DEFINE_HAVE_OS_H@ HAVE_OS_H
+
+/* Define to 1 if you have the `poll' function. */
+#@DEFINE_HAVE_POLL@ HAVE_POLL
+
+/* Define if POLLIN is defined */
+#@DEFINE_HAVE_POLLIN@ HAVE_POLLIN
+
+/* Define to 1 if you have the <poll.h> header file. */
+#@DEFINE_HAVE_POLL_H@ HAVE_POLL_H
+
+/* Define to 1 if you have the `port_create' function. */
+#@DEFINE_HAVE_PORT_CREATE@ HAVE_PORT_CREATE
+
+/* Define to 1 if you have the <process.h> header file. */
+#@DEFINE_HAVE_PROCESS_H@ HAVE_PROCESS_H
+
+/* Define to 1 if you have the `pthread_attr_setguardsize' function. */
+#@DEFINE_HAVE_PTHREAD_ATTR_SETGUARDSIZE@ HAVE_PTHREAD_ATTR_SETGUARDSIZE
+
+/* Define to 1 if you have the <pthread.h> header file. */
+#@DEFINE_HAVE_PTHREAD_H@ HAVE_PTHREAD_H
+
+/* Define to 1 if you have the `pthread_key_delete' function. */
+#@DEFINE_HAVE_PTHREAD_KEY_DELETE@ HAVE_PTHREAD_KEY_DELETE
+
+/* Define to 1 if you have the `pthread_mutexattr_setpshared' function. */
+#@DEFINE_HAVE_PTHREAD_MUTEXATTR_SETPSHARED@ HAVE_PTHREAD_MUTEXATTR_SETPSHARED
+
+/* Define if recursive pthread mutexes are available */
+#@DEFINE_HAVE_PTHREAD_MUTEX_RECURSIVE@ HAVE_PTHREAD_MUTEX_RECURSIVE
+
+/* Define if cross-process robust mutexes are available */
+#@DEFINE_HAVE_PTHREAD_MUTEX_ROBUST@ HAVE_PTHREAD_MUTEX_ROBUST
+
+/* Define if PTHREAD_PROCESS_SHARED is defined in pthread.h */
+#@DEFINE_HAVE_PTHREAD_PROCESS_SHARED@ HAVE_PTHREAD_PROCESS_SHARED
+
+/* Define if pthread rwlocks are available */
+#@DEFINE_HAVE_PTHREAD_RWLOCKS@ HAVE_PTHREAD_RWLOCKS
+
+/* Define to 1 if you have the `pthread_rwlock_init' function. */
+#@DEFINE_HAVE_PTHREAD_RWLOCK_INIT@ HAVE_PTHREAD_RWLOCK_INIT
+
+/* Define to 1 if you have the `pthread_yield' function. */
+#@DEFINE_HAVE_PTHREAD_YIELD@ HAVE_PTHREAD_YIELD
+
+/* Define to 1 if you have the `putenv' function. */
+#@DEFINE_HAVE_PUTENV@ HAVE_PUTENV
+
+/* Define to 1 if you have the <pwd.h> header file. */
+#@DEFINE_HAVE_PWD_H@ HAVE_PWD_H
+
+/* Define to 1 if you have the `readdir64_r' function. */
+#@DEFINE_HAVE_READDIR64_R@ HAVE_READDIR64_R
+
+/* Define to 1 if you have the <sched.h> header file. */
+#@DEFINE_HAVE_SCHED_H@ HAVE_SCHED_H
+
+/* Define to 1 if you have the `sched_yield' function. */
+#@DEFINE_HAVE_SCHED_YIELD@ HAVE_SCHED_YIELD
+
+/* Define to 1 if you have the <semaphore.h> header file. */
+#@DEFINE_HAVE_SEMAPHORE_H@ HAVE_SEMAPHORE_H
+
+/* Define to 1 if you have the `semctl' function. */
+#@DEFINE_HAVE_SEMCTL@ HAVE_SEMCTL
+
+/* Define to 1 if you have the `semget' function. */
+#@DEFINE_HAVE_SEMGET@ HAVE_SEMGET
+
+/* Define to 1 if you have the `sem_close' function. */
+#@DEFINE_HAVE_SEM_CLOSE@ HAVE_SEM_CLOSE
+
+/* Define to 1 if you have the `sem_post' function. */
+#@DEFINE_HAVE_SEM_POST@ HAVE_SEM_POST
+
+/* Define if SEM_UNDO is defined in sys/sem.h */
+#@DEFINE_HAVE_SEM_UNDO@ HAVE_SEM_UNDO
+
+/* Define to 1 if you have the `sem_unlink' function. */
+#@DEFINE_HAVE_SEM_UNLINK@ HAVE_SEM_UNLINK
+
+/* Define to 1 if you have the `sem_wait' function. */
+#@DEFINE_HAVE_SEM_WAIT@ HAVE_SEM_WAIT
+
+/* Define to 1 if you have the `sendfile' function. */
+#@DEFINE_HAVE_SENDFILE@ HAVE_SENDFILE
+
+/* Define to 1 if you have the `sendfile64' function. */
+#@DEFINE_HAVE_SENDFILE64@ HAVE_SENDFILE64
+
+/* Define to 1 if you have the `sendfilev' function. */
+#@DEFINE_HAVE_SENDFILEV@ HAVE_SENDFILEV
+
+/* Define to 1 if you have the `sendfilev64' function. */
+#@DEFINE_HAVE_SENDFILEV64@ HAVE_SENDFILEV64
+
+/* Define to 1 if you have the `send_file' function. */
+#@DEFINE_HAVE_SEND_FILE@ HAVE_SEND_FILE
+
+/* Define to 1 if you have the `setenv' function. */
+#@DEFINE_HAVE_SETENV@ HAVE_SETENV
+
+/* Define to 1 if you have the `setrlimit' function. */
+#@DEFINE_HAVE_SETRLIMIT@ HAVE_SETRLIMIT
+
+/* Define to 1 if you have the `setsid' function. */
+#@DEFINE_HAVE_SETSID@ HAVE_SETSID
+
+/* Define to 1 if you have the `set_h_errno' function. */
+#@DEFINE_HAVE_SET_H_ERRNO@ HAVE_SET_H_ERRNO
+
+/* Define to 1 if you have the `shmat' function. */
+#@DEFINE_HAVE_SHMAT@ HAVE_SHMAT
+
+/* Define to 1 if you have the `shmctl' function. */
+#@DEFINE_HAVE_SHMCTL@ HAVE_SHMCTL
+
+/* Define to 1 if you have the `shmdt' function. */
+#@DEFINE_HAVE_SHMDT@ HAVE_SHMDT
+
+/* Define to 1 if you have the `shmget' function. */
+#@DEFINE_HAVE_SHMGET@ HAVE_SHMGET
+
+/* Define to 1 if you have the `shm_open' function. */
+#@DEFINE_HAVE_SHM_OPEN@ HAVE_SHM_OPEN
+
+/* Define to 1 if you have the `shm_unlink' function. */
+#@DEFINE_HAVE_SHM_UNLINK@ HAVE_SHM_UNLINK
+
+/* Define to 1 if you have the `sigaction' function. */
+#@DEFINE_HAVE_SIGACTION@ HAVE_SIGACTION
+
+/* Define to 1 if you have the <signal.h> header file. */
+#@DEFINE_HAVE_SIGNAL_H@ HAVE_SIGNAL_H
+
+/* Define to 1 if you have the `sigsuspend' function. */
+#@DEFINE_HAVE_SIGSUSPEND@ HAVE_SIGSUSPEND
+
+/* Define to 1 if you have the `sigwait' function. */
+#@DEFINE_HAVE_SIGWAIT@ HAVE_SIGWAIT
+
+/* Whether you have socklen_t */
+#@DEFINE_HAVE_SOCKLEN_T@ HAVE_SOCKLEN_T
+
+/* Define if the SOCK_CLOEXEC flag is supported */
+#@DEFINE_HAVE_SOCK_CLOEXEC@ HAVE_SOCK_CLOEXEC
+
+/* Define if SO_ACCEPTFILTER is defined in sys/socket.h */
+#@DEFINE_HAVE_SO_ACCEPTFILTER@ HAVE_SO_ACCEPTFILTER
+
+/* Define to 1 if you have the <stdarg.h> header file. */
+#@DEFINE_HAVE_STDARG_H@ HAVE_STDARG_H
+
+/* Define to 1 if you have the <stddef.h> header file. */
+#@DEFINE_HAVE_STDDEF_H@ HAVE_STDDEF_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#@DEFINE_HAVE_STDINT_H@ HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#@DEFINE_HAVE_STDIO_H@ HAVE_STDIO_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#@DEFINE_HAVE_STDLIB_H@ HAVE_STDLIB_H
+
+/* Define to 1 if you have the `strcasecmp' function. */
+#@DEFINE_HAVE_STRCASECMP@ HAVE_STRCASECMP
+
+/* Define to 1 if you have the `strdup' function. */
+#@DEFINE_HAVE_STRDUP@ HAVE_STRDUP
+
+/* Define to 1 if you have the `strerror_r' function. */
+#@DEFINE_HAVE_STRERROR_R@ HAVE_STRERROR_R
+
+/* Define to 1 if you have the `stricmp' function. */
+#@DEFINE_HAVE_STRICMP@ HAVE_STRICMP
+
+/* Define to 1 if you have the <strings.h> header file. */
+#@DEFINE_HAVE_STRINGS_H@ HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#@DEFINE_HAVE_STRING_H@ HAVE_STRING_H
+
+/* Define to 1 if you have the `strncasecmp' function. */
+#@DEFINE_HAVE_STRNCASECMP@ HAVE_STRNCASECMP
+
+/* Define to 1 if you have the `strnicmp' function. */
+#@DEFINE_HAVE_STRNICMP@ HAVE_STRNICMP
+
+/* Define to 1 if you have the `strstr' function. */
+#@DEFINE_HAVE_STRSTR@ HAVE_STRSTR
+
+/* Define if struct impreq was found */
+#@DEFINE_HAVE_STRUCT_IPMREQ@ HAVE_STRUCT_IPMREQ
+
+/* Define to 1 if `st_atimensec' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_ATIMENSEC@ HAVE_STRUCT_STAT_ST_ATIMENSEC
+
+/* Define to 1 if `st_atime_n' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_ATIME_N@ HAVE_STRUCT_STAT_ST_ATIME_N
+
+/* Define to 1 if `st_atim.tv_nsec' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC@ HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC
+
+/* Define to 1 if `st_blocks' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_BLOCKS@ HAVE_STRUCT_STAT_ST_BLOCKS
+
+/* Define to 1 if `st_ctimensec' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_CTIMENSEC@ HAVE_STRUCT_STAT_ST_CTIMENSEC
+
+/* Define to 1 if `st_ctime_n' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_CTIME_N@ HAVE_STRUCT_STAT_ST_CTIME_N
+
+/* Define to 1 if `st_ctim.tv_nsec' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC@ HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC
+
+/* Define to 1 if `st_mtimensec' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_MTIMENSEC@ HAVE_STRUCT_STAT_ST_MTIMENSEC
+
+/* Define to 1 if `st_mtime_n' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_MTIME_N@ HAVE_STRUCT_STAT_ST_MTIME_N
+
+/* Define to 1 if `st_mtim.tv_nsec' is a member of `struct stat'. */
+#@DEFINE_HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC@ HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
+
+/* Define to 1 if `tm_gmtoff' is a member of `struct tm'. */
+#@DEFINE_HAVE_STRUCT_TM_TM_GMTOFF@ HAVE_STRUCT_TM_TM_GMTOFF
+
+/* Define to 1 if `__tm_gmtoff' is a member of `struct tm'. */
+#@DEFINE_HAVE_STRUCT_TM___TM_GMTOFF@ HAVE_STRUCT_TM___TM_GMTOFF
+
+/* Define to 1 if you have the <sysapi.h> header file. */
+#@DEFINE_HAVE_SYSAPI_H@ HAVE_SYSAPI_H
+
+/* Define to 1 if you have the <sysgtime.h> header file. */
+#@DEFINE_HAVE_SYSGTIME_H@ HAVE_SYSGTIME_H
+
+/* Define to 1 if you have the <sys/file.h> header file. */
+#@DEFINE_HAVE_SYS_FILE_H@ HAVE_SYS_FILE_H
+
+/* Define to 1 if you have the <sys/ioctl.h> header file. */
+#@DEFINE_HAVE_SYS_IOCTL_H@ HAVE_SYS_IOCTL_H
+
+/* Define to 1 if you have the <sys/ipc.h> header file. */
+#@DEFINE_HAVE_SYS_IPC_H@ HAVE_SYS_IPC_H
+
+/* Define to 1 if you have the <sys/mman.h> header file. */
+#@DEFINE_HAVE_SYS_MMAN_H@ HAVE_SYS_MMAN_H
+
+/* Define to 1 if you have the <sys/mutex.h> header file. */
+#@DEFINE_HAVE_SYS_MUTEX_H@ HAVE_SYS_MUTEX_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#@DEFINE_HAVE_SYS_PARAM_H@ HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/poll.h> header file. */
+#@DEFINE_HAVE_SYS_POLL_H@ HAVE_SYS_POLL_H
+
+/* Define to 1 if you have the <sys/resource.h> header file. */
+#@DEFINE_HAVE_SYS_RESOURCE_H@ HAVE_SYS_RESOURCE_H
+
+/* Define to 1 if you have the <sys/select.h> header file. */
+#@DEFINE_HAVE_SYS_SELECT_H@ HAVE_SYS_SELECT_H
+
+/* Define to 1 if you have the <sys/sem.h> header file. */
+#@DEFINE_HAVE_SYS_SEM_H@ HAVE_SYS_SEM_H
+
+/* Define to 1 if you have the <sys/sendfile.h> header file. */
+#@DEFINE_HAVE_SYS_SENDFILE_H@ HAVE_SYS_SENDFILE_H
+
+/* Define to 1 if you have the <sys/shm.h> header file. */
+#@DEFINE_HAVE_SYS_SHM_H@ HAVE_SYS_SHM_H
+
+/* Define to 1 if you have the <sys/signal.h> header file. */
+#@DEFINE_HAVE_SYS_SIGNAL_H@ HAVE_SYS_SIGNAL_H
+
+/* Define to 1 if you have the <sys/socket.h> header file. */
+#@DEFINE_HAVE_SYS_SOCKET_H@ HAVE_SYS_SOCKET_H
+
+/* Define to 1 if you have the <sys/sockio.h> header file. */
+#@DEFINE_HAVE_SYS_SOCKIO_H@ HAVE_SYS_SOCKIO_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#@DEFINE_HAVE_SYS_STAT_H@ HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/sysctl.h> header file. */
+#@DEFINE_HAVE_SYS_SYSCTL_H@ HAVE_SYS_SYSCTL_H
+
+/* Define to 1 if you have the <sys/syslimits.h> header file. */
+#@DEFINE_HAVE_SYS_SYSLIMITS_H@ HAVE_SYS_SYSLIMITS_H
+
+/* Define to 1 if you have the <sys/time.h> header file. */
+#@DEFINE_HAVE_SYS_TIME_H@ HAVE_SYS_TIME_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#@DEFINE_HAVE_SYS_TYPES_H@ HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <sys/uio.h> header file. */
+#@DEFINE_HAVE_SYS_UIO_H@ HAVE_SYS_UIO_H
+
+/* Define to 1 if you have the <sys/un.h> header file. */
+#@DEFINE_HAVE_SYS_UN_H@ HAVE_SYS_UN_H
+
+/* Define to 1 if you have the <sys/uuid.h> header file. */
+#@DEFINE_HAVE_SYS_UUID_H@ HAVE_SYS_UUID_H
+
+/* Define to 1 if you have the <sys/wait.h> header file. */
+#@DEFINE_HAVE_SYS_WAIT_H@ HAVE_SYS_WAIT_H
+
+/* Define if TCP_CORK is defined in netinet/tcp.h */
+#@DEFINE_HAVE_TCP_CORK@ HAVE_TCP_CORK
+
+/* Define if TCP_NODELAY and TCP_CORK can be enabled at the same time */
+#@DEFINE_HAVE_TCP_NODELAY_WITH_CORK@ HAVE_TCP_NODELAY_WITH_CORK
+
+/* Define if TCP_NOPUSH is defined in netinet/tcp.h */
+#@DEFINE_HAVE_TCP_NOPUSH@ HAVE_TCP_NOPUSH
+
+/* Define to 1 if you have the <termios.h> header file. */
+#@DEFINE_HAVE_TERMIOS_H@ HAVE_TERMIOS_H
+
+/* Define to 1 if you have the <time.h> header file. */
+#@DEFINE_HAVE_TIME_H@ HAVE_TIME_H
+
+/* Define to 1 if you have the <tpfeq.h> header file. */
+#@DEFINE_HAVE_TPFEQ_H@ HAVE_TPFEQ_H
+
+/* Define to 1 if you have the <tpfio.h> header file. */
+#@DEFINE_HAVE_TPFIO_H@ HAVE_TPFIO_H
+
+/* Define if truerand is supported */
+#@DEFINE_HAVE_TRUERAND@ HAVE_TRUERAND
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#@DEFINE_HAVE_UNISTD_H@ HAVE_UNISTD_H
+
+/* Define to 1 if you have the <unix.h> header file. */
+#@DEFINE_HAVE_UNIX_H@ HAVE_UNIX_H
+
+/* Define to 1 if you have the `unsetenv' function. */
+#@DEFINE_HAVE_UNSETENV@ HAVE_UNSETENV
+
+/* Define to 1 if you have the `utime' function. */
+#@DEFINE_HAVE_UTIME@ HAVE_UTIME
+
+/* Define to 1 if you have the `utimes' function. */
+#@DEFINE_HAVE_UTIMES@ HAVE_UTIMES
+
+/* Define to 1 if you have the `uuid_create' function. */
+#@DEFINE_HAVE_UUID_CREATE@ HAVE_UUID_CREATE
+
+/* Define to 1 if you have the `uuid_generate' function. */
+#@DEFINE_HAVE_UUID_GENERATE@ HAVE_UUID_GENERATE
+
+/* Define to 1 if you have the <uuid.h> header file. */
+#@DEFINE_HAVE_UUID_H@ HAVE_UUID_H
+
+/* Define to 1 if you have the <uuid/uuid.h> header file. */
+#@DEFINE_HAVE_UUID_UUID_H@ HAVE_UUID_UUID_H
+
+/* Define if C compiler supports VLA */
+#@DEFINE_HAVE_VLA@ HAVE_VLA
+
+/* Define to 1 if you have the `waitpid' function. */
+#@DEFINE_HAVE_WAITPID@ HAVE_WAITPID
+
+/* Define to 1 if you have the <windows.h> header file. */
+#@DEFINE_HAVE_WINDOWS_H@ HAVE_WINDOWS_H
+
+/* Define to 1 if you have the <winsock2.h> header file. */
+#@DEFINE_HAVE_WINSOCK2_H@ HAVE_WINSOCK2_H
+
+/* Define to 1 if you have the `writev' function. */
+#@DEFINE_HAVE_WRITEV@ HAVE_WRITEV
+
+/* Define for z/OS pthread API nuances */
+#@DEFINE_HAVE_ZOS_PTHREADS@ HAVE_ZOS_PTHREADS
+
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#cmakedefine LT_OBJDIR "@LT_OBJDIR@"
+
+/* Define if EAI_ error codes from getaddrinfo are negative */
+#@DEFINE_NEGATIVE_EAI@ NEGATIVE_EAI
+
+/* Define to the address where bug reports for this package should be sent. */
+#cmakedefine PACKAGE_BUGREPORT "@PACKAGE_BUGREPORT@"
+
+/* Define to the full name of this package. */
+#cmakedefine PACKAGE_NAME "@PACKAGE_NAME@"
+
+/* Define to the full name and version of this package. */
+#cmakedefine PACKAGE_STRING "@PACKAGE_STRING@"
+
+/* Define to the one symbol short name of this package. */
+#cmakedefine PACKAGE_TARNAME "@PACKAGE_TARNAME@"
+
+/* Define to the home page for this package. */
+#cmakedefine PACKAGE_URL "@PACKAGE_URL@"
+
+/* Define to the version of this package. */
+#cmakedefine PACKAGE_VERSION "@PACKAGE_VERSION@"
+
+/* Define if POSIX semaphores affect threads within the process */
+#@DEFINE_POSIXSEM_IS_GLOBAL@ POSIXSEM_IS_GLOBAL
+
+/* Define on PowerPC 405 where errata 77 applies */
+#@DEFINE_PPC405_ERRATA@ PPC405_ERRATA
+
+/* Define if pthread_attr_getdetachstate() has one arg */
+#@DEFINE_PTHREAD_ATTR_GETDETACHSTATE_TAKES_ONE_ARG@ PTHREAD_ATTR_GETDETACHSTATE_TAKES_ONE_ARG
+
+/* Define if pthread_getspecific() has two args */
+#@DEFINE_PTHREAD_GETSPECIFIC_TAKES_TWO_ARGS@ PTHREAD_GETSPECIFIC_TAKES_TWO_ARGS
+
+/* Define if readdir is thread safe */
+#@DEFINE_READDIR_IS_THREAD_SAFE@ READDIR_IS_THREAD_SAFE
+
+/* Define to 1 if the `setpgrp' function takes no argument. */
+#@DEFINE_SETPGRP_VOID@ SETPGRP_VOID
+
+/* */
+#@DEFINE_SIGWAIT_TAKES_ONE_ARG@ SIGWAIT_TAKES_ONE_ARG
+
+/* The size of `char', as computed by sizeof. */
+@SIZEOF_CHAR_CODE@
+
+/* The size of ino_t */
+@SIZEOF_INO_T_CODE@
+
+/* The size of `int', as computed by sizeof. */
+@SIZEOF_INT_CODE@
+
+/* The size of `long', as computed by sizeof. */
+@SIZEOF_LONG_CODE@
+
+/* The size of `long long', as computed by sizeof. */
+@SIZEOF_LONG_LONG_CODE@
+
+/* The size of off_t */
+@SIZEOF_OFF_T_CODE@
+
+/* The size of pid_t */
+@SIZEOF_PID_T_CODE@
+
+/* The size of `short', as computed by sizeof. */
+@SIZEOF_SHORT_CODE@
+
+/* The size of size_t */
+@SIZEOF_SIZE_T_CODE@
+
+/* The size of ssize_t */
+@SIZEOF_SSIZE_T_CODE@
+
+/* The size of struct iovec */
+@SIZEOF_STRUCT_IOVEC_CODE@
+
+/* The size of `void*', as computed by sizeof. */
+@SIZEOF_VOIDP_CODE@
+
+/* If using the C implementation of alloca, define if you know the
+   direction of stack growth for your system; otherwise it will be
+   automatically deduced at runtime.
+	STACK_DIRECTION > 0 => grows toward higher addresses
+	STACK_DIRECTION < 0 => grows toward lower addresses
+	STACK_DIRECTION = 0 => direction of growth unknown */
+#@DEFINE_STACK_DIRECTION@ STACK_DIRECTION
+
+/* Define to 1 if you have the ANSI C header files. */
+#@DEFINE_STDC_HEADERS@ STDC_HEADERS
+
+/* Define if strerror returns int */
+#@DEFINE_STRERROR_R_RC_INT@ STRERROR_R_RC_INT
+
+/* Define if SysV semaphores affect threads within the process */
+#@DEFINE_SYSVSEM_IS_GLOBAL@ SYSVSEM_IS_GLOBAL
+
+/* Define if use of generic atomics is requested */
+#@DEFINE_USE_ATOMICS_GENERIC@ USE_ATOMICS_GENERIC
+
+/* Define if BeOS Semaphores will be used */
+#@DEFINE_USE_BEOSSEM@ USE_BEOSSEM
+
+/* Define if SVR4-style fcntl() will be used */
+#@DEFINE_USE_FCNTL_SERIALIZE@ USE_FCNTL_SERIALIZE
+
+/* Define if 4.2BSD-style flock() will be used */
+#@DEFINE_USE_FLOCK_SERIALIZE@ USE_FLOCK_SERIALIZE
+
+/* Define if BeOS areas will be used */
+#@DEFINE_USE_SHMEM_BEOS@ USE_SHMEM_BEOS
+
+/* Define if BeOS areas will be used */
+#@DEFINE_USE_SHMEM_BEOS_ANON@ USE_SHMEM_BEOS_ANON
+
+/* Define if 4.4BSD-style mmap() via MAP_ANON will be used */
+#@DEFINE_USE_SHMEM_MMAP_ANON@ USE_SHMEM_MMAP_ANON
+
+/* Define if mmap() via POSIX.1 shm_open() on temporary file will be used */
+#@DEFINE_USE_SHMEM_MMAP_SHM@ USE_SHMEM_MMAP_SHM
+
+/* Define if Classical mmap() on temporary file will be used */
+#@DEFINE_USE_SHMEM_MMAP_TMP@ USE_SHMEM_MMAP_TMP
+
+/* Define if SVR4-style mmap() on /dev/zero will be used */
+#@DEFINE_USE_SHMEM_MMAP_ZERO@ USE_SHMEM_MMAP_ZERO
+
+/* Define if OS/2 DosAllocSharedMem() will be used */
+#@DEFINE_USE_SHMEM_OS2@ USE_SHMEM_OS2
+
+/* Define if OS/2 DosAllocSharedMem() will be used */
+#@DEFINE_USE_SHMEM_OS2_ANON@ USE_SHMEM_OS2_ANON
+
+/* Define if SysV IPC shmget() will be used */
+#@DEFINE_USE_SHMEM_SHMGET@ USE_SHMEM_SHMGET
+
+/* Define if SysV IPC shmget() will be used */
+#@DEFINE_USE_SHMEM_SHMGET_ANON@ USE_SHMEM_SHMGET_ANON
+
+/* Define if Windows shared memory will be used */
+#@DEFINE_USE_SHMEM_WIN32@ USE_SHMEM_WIN32
+
+/* Define if Windows CreateFileMapping() will be used */
+#@DEFINE_USE_SHMEM_WIN32_ANON@ USE_SHMEM_WIN32_ANON
+
+/* Enable extensions on AIX 3, Interix.  */
+#ifndef _ALL_SOURCE
+#@DEFINE__ALL_SOURCE@ _ALL_SOURCE
+#endif
+/* Enable GNU extensions on systems that have them.  */
+#ifndef _GNU_SOURCE
+#@DEFINE__GNU_SOURCE@ _GNU_SOURCE
+#endif
+/* Enable threading extensions on Solaris.  */
+#ifndef _POSIX_PTHREAD_SEMANTICS
+#@DEFINE__POSIX_PTHREAD_SEMANTICS@ _POSIX_PTHREAD_SEMANTICS
+#endif
+/* Enable extensions on HP NonStop.  */
+#ifndef _TANDEM_SOURCE
+#@DEFINE__TANDEM_SOURCE@ _TANDEM_SOURCE
+#endif
+/* Enable general extensions on Solaris.  */
+#ifndef __EXTENSIONS__
+#@DEFINE___EXTENSIONS__@ __EXTENSIONS__
+#endif
+
+
+/* Define if SysV IPC semget() will be used */
+#@DEFINE_USE_SYSVSEM_SERIALIZE@ USE_SYSVSEM_SERIALIZE
+
+/* Define if apr_wait_for_io_or_timeout() uses poll(2) */
+#@DEFINE_WAITIO_USES_POLL@ WAITIO_USES_POLL
+
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+#@DEFINE_WORDS_BIGENDIAN@ WORDS_BIGENDIAN
+# endif
+#endif
+
+/* Define to 1 if on MINIX. */
+#@DEFINE__MINIX@ _MINIX
+
+/* Define to 2 if the system does not provide POSIX.1 features except with
+   this defined. */
+#@DEFINE__POSIX_1_SOURCE@ _POSIX_1_SOURCE
+
+/* Define to 1 if you need to in order for `stat' and other things to work. */
+#@DEFINE__POSIX_SOURCE@ _POSIX_SOURCE
+
+/* Define to empty if `const' does not conform to ANSI C. */
+#@DEFINE_const@ const
+
+/* Define to `int' if <sys/types.h> doesn't define. */
+#cmakedefine gid_t @gid_t@
+
+/* Define to `__inline__' or `__inline' if that's what the C compiler
+   calls it, or to nothing if 'inline' is not supported under any name.  */
+#ifndef __cplusplus
+#cmakedefine inline @inline@
+#endif
+
+/* Define to `long int' if <sys/types.h> does not define. */
+#cmakedefine off_t @off_t@
+
+/* Define to `int' if <sys/types.h> does not define. */
+#cmakedefine pid_t @pid_t@
+
+/* Define to `unsigned int' if <sys/types.h> does not define. */
+#cmakedefine size_t @size_t@
+
+/* Define to `int' if <sys/types.h> does not define. */
+#cmakedefine ssize_t @ssize_t@
+
+/* Define to `int' if <sys/types.h> doesn't define. */
+#cmakedefine uid_t @uid_t@
+
+
+/* switch this on if we have a BeOS version below BONE */
+#if defined(BEOS) && !defined(HAVE_BONE_VERSION)
+#define BEOS_R5 1
+#else
+#define BEOS_BONE 1
+#endif
+
+/*
+ * Darwin 10's default compiler (gcc42) builds for both 64 and
+ * 32 bit architectures unless specifically told not to.
+ * In those cases, we need to override types depending on how
+ * we're being built at compile time.
+ * NOTE: This is an ugly work-around for Darwin's
+ * concept of universal binaries, a single package
+ * (executable, lib, etc...) which contains both 32
+ * and 64 bit versions. The issue is that if APR is
+ * built universally, if something else is compiled
+ * against it, some bit sizes will depend on whether
+ * it is 32 or 64 bit. This is determined by the __LP64__
+ * flag. Since we need to support both, we have to
+ * handle OS X unqiuely.
+ */
+#ifdef DARWIN_10
+
+#cmakedefine APR_OFF_T_STRFN @APR_OFF_T_STRFN@
+#cmakedefine APR_INT64_STRFN @APR_INT64_STRFN@
+#cmakedefine SIZEOF_LONG @SIZEOF_LONG@
+#cmakedefine SIZEOF_SIZE_T @SIZEOF_SIZE_T@
+#cmakedefine SIZEOF_SSIZE_T @SIZEOF_SSIZE_T@
+#cmakedefine SIZEOF_VOIDP @SIZEOF_VOIDP@
+#cmakedefine SIZEOF_STRUCT_IOVEC @SIZEOF_STRUCT_IOVEC@
+
+#ifdef __LP64__
+ #cmakedefine APR_INT64_STRFN @APR_INT64_STRFN@
+ #cmakedefine SIZEOF_LONG @SIZEOF_LONG@
+ #cmakedefine SIZEOF_SIZE_T @SIZEOF_SIZE_T@
+ #cmakedefine SIZEOF_SSIZE_T @SIZEOF_SSIZE_T@
+ #cmakedefine SIZEOF_VOIDP @SIZEOF_VOIDP@
+ #cmakedefine SIZEOF_STRUCT_IOVEC @SIZEOF_STRUCT_IOVEC@
+#else
+ #cmakedefine APR_INT64_STRFN @APR_INT64_STRFN@
+ #cmakedefine SIZEOF_LONG @SIZEOF_LONG@
+ #cmakedefine SIZEOF_SIZE_T @SIZEOF_SIZE_T@
+ #cmakedefine SIZEOF_SSIZE_T @SIZEOF_SSIZE_T@
+ #cmakedefine SIZEOF_VOIDP @SIZEOF_VOIDP@
+ #cmakedefine SIZEOF_STRUCT_IOVEC @SIZEOF_STRUCT_IOVEC@
+#endif
+
+#undef APR_OFF_T_STRFN
+#define APR_OFF_T_STRFN @APR_INT64_STRFN@
+ 
+
+#@DEFINE_SETPGRP_VOID@ SETPGRP_VOID
+#ifdef __DARWIN_UNIX03
+ #define SETPGRP_VOID 1
+#else
+/* #undef SETPGRP_VOID */
+#endif
+ 
+#endif /* DARWIN_10 */
+
+/*
+ * Include common private declarations.
+ */
+#include "../apr_private_common.h"
+#endif /* APR_PRIVATE_H */
+
