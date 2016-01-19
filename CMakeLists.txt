@@ -443,7 +443,7 @@ IF(APR_BUILD_TESTAPR)
   # requirements.
   SET(single_source_programs
     test/echod.c
-    test/sendfile.c
+    test/sendfiletest.c
     test/sockperf.c
     test/testlockperf.c
     test/testmutexscope.c
@@ -482,9 +482,9 @@ IF(APR_BUILD_TESTAPR)
   # testlockperf takes forever on Windows with default counter limit
   ADD_TEST(NAME testlockperf COMMAND testlockperf -c 50000)
 
-  # sendfile runs multiple times with different parameters.
+  # sendfiletest runs multiple times with different parameters.
   FOREACH(sendfile_mode blocking nonblocking timeout)
-    ADD_TEST(NAME sendfile-${sendfile_mode} COMMAND sendfile client ${sendfile_mode} startserver)
+    ADD_TEST(NAME sendfiletest-${sendfile_mode} COMMAND sendfiletest client ${sendfile_mode} startserver)
   ENDFOREACH()
 
   # No test is added for echod+sockperf.  Those will have to be run manually.
