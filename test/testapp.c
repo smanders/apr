@@ -7,4 +7,5 @@ int main(int argc, const char * const * argv, const char * const *env)
 
 
     apr_terminate();
+    return 0;
 }
