@@ -35,6 +35,9 @@
 # define MOD_NAME "mod_test.so"
 #elif defined(WIN32)
 # define MOD_NAME TESTBINPATH "mod_test.dll"
+#elif defined(CMAKE_UNIX)
+# define MOD_NAME "libmod_test.so"
+# define LIB_NAME "libmod_test.so"
 #elif defined(DARWIN)
 # define MOD_NAME ".libs/mod_test.so" 
 # define LIB_NAME ".libs/libmod_test.dylib" 

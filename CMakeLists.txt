@@ -474,6 +474,9 @@ IF(APR_BUILD_TESTAPR)
     testmutexscope
     testucs
   )
+  if(NOT WIN32)
+    list(REMOVE_ITEM simple_tests testucs)
+  endif()
 
   FOREACH(simple ${simple_tests})
     ADD_TEST(NAME ${simple} COMMAND ${simple})
