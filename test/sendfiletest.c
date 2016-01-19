@@ -169,10 +169,10 @@ static void spawn_server(apr_pool_t *p, apr_proc_t *out_proc)
         aprerr("apr_procattr_error_check_set()", rv);
     }
 
-    args[0] = "sendfile" EXTENSION;
+    args[0] = "sendfiletest" EXTENSION;
     args[1] = "server";
     args[2] = NULL;
-    rv = apr_proc_create(&proc, TESTBINPATH "sendfile" EXTENSION, args, NULL, procattr, p);
+    rv = apr_proc_create(&proc, TESTBINPATH "sendfiletest" EXTENSION, args, NULL, procattr, p);
     if (rv != APR_SUCCESS) {
         aprerr("apr_proc_create()", rv);
     }
@@ -508,7 +508,7 @@ static int client(apr_pool_t *p, client_socket_mode_t socket_mode,
             aprerr("apr_proc_wait() (expected APR_CHILD_DONE)", rv);
         }
         if (exitcode != 0) {
-            fprintf(stderr, "sendfile server returned %d\n", exitcode);
+            fprintf(stderr, "sendfiletest server returned %d\n", exitcode);
             exit(1);
         }
     }
