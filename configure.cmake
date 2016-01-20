@@ -141,7 +141,7 @@ check_include_file_concat(osreldate.h HAVE_OSRELDATE_H)
 check_include_file_concat(OS.h HAVE_OS_H)
 check_include_file_concat(poll.h HAVE_POLL_H)
 check_include_file_concat(pwd.h HAVE_PWD_H)
-check_include_file_concat(sched.h HAVE_SCHED_H) #TODO: configure doesn't find
+check_include_file_concat(sched.h HAVE_SCHED_H) #TODO: configure diff
 check_include_file_concat(stddef.h HAVE_STDDEF_H)
 check_include_file_concat(sysapi.h HAVE_SYSAPI_H)
 check_include_file_concat(sysgtime.h HAVE_SYSGTIME_H)
@@ -172,10 +172,9 @@ check_library_exists_concat(truerand main HAVE_LIBTRUERAND)
 check_library_exists_concat(rt shm_open HAVE_LIBRT)
 check_library_exists_concat(pthread pthread_yield HAVE_LIBPTHREAD)
 check_library_exists_concat(dl dlopen HAVE_LIBDL)
+check_library_exists_concat(socket connect HAVE_LIBSOCKET)
+check_library_exists_concat(nsl gethostbyaddr HAVE_LIBNSL)
 #check_library_exists_concat(ws2_32 getch HAVE_LIBWS2_32)
-#check_library_exists_concat(resolve hstrerror HAVE_LIBRESOLVE)
-#check_library_exists_concat(socket connect HAVE_LIBSOCKET)
-#check_library_exists_concat(nsl gethostbyaddr HAVE_LIBNSL)
 ##########
 check_exists_define01(accept4 HAVE_ACCEPT4)
 check_exists_define01(calloc HAVE_CALLOC)
@@ -208,9 +207,9 @@ check_exists_define01(localtime_r HAVE_LOCALTIME_R)
 check_exists_define01(memchr HAVE_MEMCHR)
 check_exists_define01(memmove HAVE_MEMMOVE)
 check_exists_define01(mkstemp HAVE_MKSTEMP)
-check_exists_define01(mkstemp64 HAVE_MKSTEMP64) #TODO: configure doesn't find
+check_exists_define01(mkstemp64 HAVE_MKSTEMP64) #TODO: configure diff
 check_exists_define01(mmap HAVE_MMAP)
-check_exists_define01(mmap64 HAVE_MMAP64) #TODO: configure doesn't find
+check_exists_define01(mmap64 HAVE_MMAP64) #TODO: configure diff
 check_exists_define01(munmap HAVE_MUNMAP)
 check_exists_define01(nl_langinfo HAVE_NL_LANGINFO)
 check_exists_define01(poll HAVE_POLL)
@@ -221,8 +220,8 @@ check_exists_define01(pthread_mutexattr_setpshared HAVE_PTHREAD_MUTEXATTR_SETPSH
 check_exists_define01(pthread_rwlock_init HAVE_PTHREAD_RWLOCK_INIT)
 check_exists_define01(pthread_yield HAVE_PTHREAD_YIELD)
 check_exists_define01(putenv HAVE_PUTENV)
-check_exists_define01(readdir64_r HAVE_READDIR64_R) #TODO: configure doesn't find
-check_exists_define01(sched_yield HAVE_SCHED_YIELD) #TODO: configure doesn't find
+check_exists_define01(readdir64_r HAVE_READDIR64_R) #TODO: configure diff
+check_exists_define01(sched_yield HAVE_SCHED_YIELD) #TODO: configure diff
 check_exists_define01(semctl HAVE_SEMCTL)
 check_exists_define01(semget HAVE_SEMGET)
 check_exists_define01(sem_close HAVE_SEM_CLOSE)
@@ -230,7 +229,7 @@ check_exists_define01(sem_post HAVE_SEM_POST)
 check_exists_define01(sem_unlink HAVE_SEM_UNLINK)
 check_exists_define01(sem_wait HAVE_SEM_WAIT)
 check_exists_define01(sendfile HAVE_SENDFILE)
-check_exists_define01(sendfile64 HAVE_SENDFILE64) #TODO: configure doesn't find
+check_exists_define01(sendfile64 HAVE_SENDFILE64) #TODO: configure diff
 check_exists_define01(sendfilev HAVE_SENDFILEV)
 check_exists_define01(sendfilev64 HAVE_SENDFILEV64)
 check_exists_define01(send_file HAVE_SEND_FILE)
@@ -411,13 +410,18 @@ set_define(STDC_HEADERS 1)
 ####################
 set(_ALL_SOURCE TRUE)
 set_define(_ALL_SOURCE 1)
+###
 set(_GNU_SOURCE TRUE)
 set_define(_GNU_SOURCE 1)
 add_definitions(-D_GNU_SOURCE)
+###
 set(_POSIX_PTHREAD_SEMANTICS TRUE)
 set_define(_POSIX_PTHREAD_SEMANTICS 1)
+add_definitions(-D_POSIX_PTHREAD_SEMANTICS)
+###
 set(_TANDEM_SOURCE TRUE)
 set_define(_TANDEM_SOURCE 1)
+###
 set(__EXTENSIONS__ TRUE) #TODO: determine (configure does)
 set_define(__EXTENSIONS__ 1)
 ####################
@@ -714,8 +718,13 @@ int main(void)
 unset(inline)
 ########################################
 set(APR_ALLOCATOR_USES_MMAP FALSE) #TODO: determine
-set(APR_INT64_STRFN strtol) #TODO: determine
-set(APR_OFF_T_STRFN strtol) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(APR_INT64_STRFN strtoll) #TODO: determine
+  set(APR_OFF_T_STRFN strtoll) #TODO: determine
+else()
+  set(APR_INT64_STRFN strtol) #TODO: determine
+  set(APR_OFF_T_STRFN strtol) #TODO: determine
+endif()
 set(CRAY_STACKSEG_END FALSE) #TODO: determine
 set(C_ALLOCA FALSE) #TODO: determine
 list(APPEND cmakedefine
@@ -728,8 +737,13 @@ list(APPEND cmakedefine01
   C_ALLOCA
   )
 ########################################
-set(DIRENT_INODE d_fileno) #TODO: determine
-set(DIRENT_TYPE d_type) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(DIRENT_INODE d_ino) #TODO: determine
+  set(DIRENT_TYPE) #TODO: determine
+else()
+  set(DIRENT_INODE d_fileno) #TODO: determine
+  set(DIRENT_TYPE d_type) #TODO: determine
+endif()
 list(APPEND cmakedefine
   DIRENT_INODE
   DIRENT_TYPE
@@ -759,12 +773,18 @@ list(APPEND cmakedefine01
 ########################################
 set(GETHOSTBYADDR_IS_THREAD_SAFE FALSE) #TODO: determine
 set(GETHOSTBYNAME_IS_THREAD_SAFE FALSE) #TODO: determine
-set(GETHOSTBYNAME_R_GLIBC2 TRUE) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(GETHOSTBYNAME_R_GLIBC2 FALSE) #TODO: determine
+  set(GETSERVBYNAME_R_GLIBC2 FALSE) #TODO: determine
+  set(GETSERVBYNAME_R_SOLARIS TRUE) #TODO: determine
+else()
+  set(GETHOSTBYNAME_R_GLIBC2 TRUE) #TODO: determine
+  set(GETSERVBYNAME_R_GLIBC2 TRUE) #TODO: determine
+  set(GETSERVBYNAME_R_SOLARIS FALSE) #TODO: determine
+endif()
 set(GETHOSTBYNAME_R_HOSTENT_DATA FALSE) #TODO: determine
 set(GETSERVBYNAME_IS_THREAD_SAFE FALSE) #TODO: determine
-set(GETSERVBYNAME_R_GLIBC2 TRUE) #TODO: determine
 set(GETSERVBYNAME_R_OSF1 FALSE) #TODO: determine
-set(GETSERVBYNAME_R_SOLARIS FALSE) #TODO: determine
 list(APPEND cmakedefine01
   GETHOSTBYADDR_IS_THREAD_SAFE
   GETHOSTBYNAME_IS_THREAD_SAFE
@@ -776,19 +796,32 @@ list(APPEND cmakedefine01
   GETSERVBYNAME_R_SOLARIS
   )
 ########################################
-set(HAVE_DECL_SYS_SIGLIST TRUE) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(HAVE_DECL_SYS_SIGLIST FALSE) #TODO: determine
+else()
+  set(HAVE_DECL_SYS_SIGLIST TRUE) #TODO: determine
+endif()
 set01(HAVE_DECL_SYS_SIGLIST HAVE_DECL_SYS_SIGLIST)
 ########################################
 set(HAVE_AIO_MSGQ FALSE) #TODO: determine
 set(HAVE_ATOMIC_BUILTINS TRUE) #TODO: determine
 set(HAVE_EGD FALSE) #TODO: determine
-set(HAVE_EPOLL TRUE) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(HAVE_EPOLL FALSE) #TODO: determine
+else()
+  set(HAVE_EPOLL TRUE) #TODO: determine
+endif()
 set(HAVE_HSTRERROR FALSE) #TODO: determine
 set(HAVE_PTHREAD_MUTEX_RECURSIVE TRUE) #TODO: determine
 set(HAVE_PTHREAD_MUTEX_ROBUST TRUE) #TODO: determine
 set(HAVE_PTHREAD_RWLOCKS TRUE) #TODO: determine
-set(HAVE_SOCK_CLOEXEC TRUE) #TODO: determine
-set(HAVE_TCP_NODELAY_WITH_CORK TRUE) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(HAVE_SOCK_CLOEXEC FALSE) #TODO: determine
+  set(HAVE_TCP_NODELAY_WITH_CORK FALSE) #TODO: determine
+else()
+  set(HAVE_SOCK_CLOEXEC TRUE) #TODO: determine
+  set(HAVE_TCP_NODELAY_WITH_CORK TRUE) #TODO: determine
+endif()
 set(HAVE_TRUERAND FALSE) #TODO: determine
 set(HAVE_VLA TRUE) #TODO: determine
 set(HAVE_ZOS_PTHREADS FALSE) #TODO: determine
@@ -808,7 +841,11 @@ list(APPEND cmakedefine01
   HAVE_ZOS_PTHREADS
   )
 ########################################
-set(NEGATIVE_EAI TRUE) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(NEGATIVE_EAI FALSE) #TODO: determine
+else()
+  set(NEGATIVE_EAI TRUE) #TODO: determine
+endif()
 set(POSIXSEM_IS_GLOBAL FALSE) #TODO: determine
 set(PPC405_ERRATA FALSE) #TODO: determine
 set(PTHREAD_ATTR_GETDETACHSTATE_TAKES_ONE_ARG FALSE) #TODO: determine
@@ -817,7 +854,11 @@ set(READDIR_IS_THREAD_SAFE FALSE) #TODO: determine
 set(SETPGRP_VOID TRUE) #TODO: determine
 set(SIGWAIT_TAKES_ONE_ARG FALSE) #TODO: determine
 set(STACK_DIRECTION FALSE) #TODO: determine
-set(STRERROR_R_RC_INT FALSE) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(STRERROR_R_RC_INT TRUE) #TODO: determine
+else()
+  set(STRERROR_R_RC_INT FALSE) #TODO: determine
+endif()
 set(SYSVSEM_IS_GLOBAL FALSE) #TODO: determine
 list(APPEND cmakedefine01
   NEGATIVE_EAI
@@ -837,6 +878,12 @@ set(USE_ATOMICS_GENERIC FALSE) #TODO: determine
 set(USE_BEOSSEM FALSE) #TODO: determine
 set(USE_FCNTL_SERIALIZE FALSE) #TODO: determine
 set(USE_FLOCK_SERIALIZE FALSE) #TODO: determine
+set(USE_POSIXSEM_SERIALIZE FALSE) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(USE_PROC_PTHREAD_SERIALIZE TRUE) #TODO: determine
+else()
+  set(USE_PROC_PTHREAD_SERIALIZE FALSE) #TODO: determine
+endif()
 set(USE_SHMEM_BEOS FALSE) #TODO: determine
 set(USE_SHMEM_BEOS_ANON FALSE) #TODO: determine
 set(USE_SHMEM_MMAP_ANON TRUE) #TODO: determine
@@ -849,6 +896,11 @@ set(USE_SHMEM_SHMGET TRUE) #TODO: determine
 set(USE_SHMEM_SHMGET_ANON FALSE) #TODO: determine
 set(USE_SHMEM_WIN32 FALSE) #TODO: determine
 set(USE_SHMEM_WIN32_ANON FALSE) #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(USE_SYSVSEM_SERIALIZE FALSE) #TODO: determine
+else()
+  set(USE_SYSVSEM_SERIALIZE TRUE) #TODO: determine
+endif()
 list(APPEND cmakedefine01
   USE_ATOMICS_GENERIC
   USE_BEOSSEM
@@ -866,15 +918,14 @@ list(APPEND cmakedefine01
   USE_SHMEM_SHMGET_ANON
   USE_SHMEM_WIN32
   USE_SHMEM_WIN32_ANON
+  USE_SYSVSEM_SERIALIZE
   )
 ########################################
-set(USE_SYSVSEM_SERIALIZE TRUE) #TODO: determine
 set(WAITIO_USES_POLL TRUE) #TODO: determine
 set(_MINIX FALSE) #TODO: determine
 set(_POSIX_1_SOURCE FALSE) #TODO: determine
 set(_POSIX_SOURCE FALSE) #TODO: determine
 list(APPEND cmakedefine01
-  USE_SYSVSEM_SERIALIZE
   WAITIO_USES_POLL
   _MINIX
   _POSIX_1_SOURCE
@@ -891,45 +942,45 @@ endforeach()
 configure_file(${CMAKE_SOURCE_DIR}/include/arch/unix/apr_private.cmake.in .)
 configure_file(${CMAKE_BINARY_DIR}/apr_private.cmake.in ${PROJECT_BINARY_DIR}/apr_private.h)
 ################################################################################
-set01(arpa_ineth HAVE_ARPA_INET_H)
-set01(conioh HAVE_CONIO_H)
-set01(crypth HAVE_CRYPT_H)
-set01(ctypeh HAVE_CTYPE_H)
-set01(direnth HAVE_DIRENT_H)
-set01(errnoh HAVE_ERRNO_H)
-set01(fcntlh HAVE_FCNTL_H)
-set01(ioh HAVE_IO_H)
-set01(limitsh HAVE_LIMITS_H)
-set01(netdbh HAVE_NETDB_H)
-set01(netinet_inh HAVE_NETINET_IN_H)
-set01(netinet_sctph HAVE_NETINET_SCTP_H)
-set01(netinet_sctp_uioh HAVE_NETINET_SCTP_UIO_H)
-set01(netinet_tcph HAVE_NETINET_TCP_H)
-set01(processh HAVE_PROCESS_H)
-set01(pthreadh HAVE_PTHREAD_H)
-set01(semaphoreh HAVE_SEMAPHORE_H)
-set01(signalh HAVE_SIGNAL_H)
-set01(stdargh HAVE_STDARG_H)
-set01(stdint HAVE_STDINT_H)
-set01(stdioh HAVE_STDIO_H)
-set01(stdlibh HAVE_STDLIB_H)
-set01(stringh HAVE_STRING_H)
-set01(stringsh HAVE_STRINGS_H)
-set01(sys_ioctlh HAVE_SYS_IOCTL_H)
-set01(sys_sendfileh HAVE_SYS_SENDFILE_H)
-set01(sys_signalh HAVE_SYS_SIGNAL_H)
-set01(sys_socketh HAVE_SYS_SOCKET_H)
-set01(sys_sockioh HAVE_SYS_SOCKIO_H)
-set01(sys_syslimitsh HAVE_SYS_SYSLIMITS_H)
-set01(sys_timeh HAVE_SYS_TIME_H)
-set01(sys_typesh HAVE_SYS_TYPES_H)
-set01(sys_uioh HAVE_SYS_UIO_H)
-set01(sys_unh HAVE_SYS_UN_H)
-set01(sys_waith HAVE_SYS_WAIT_H)
-set01(timeh HAVE_TIME_H)
-set01(unistdh HAVE_UNISTD_H)
-set01(windowsh HAVE_WINDOWS_H)
-set01(winsock2h HAVE_WINSOCK2_H)
+set01(arpa_ineth HAVE_ARPA_INET_H) # APR_HAVE_ARPA_INET_H
+set01(conioh HAVE_CONIO_H) # APR_HAVE_CONIO_H
+set01(crypth HAVE_CRYPT_H) # APR_HAVE_CRYPT_H
+set01(ctypeh HAVE_CTYPE_H) # APR_HAVE_CTYPE_H
+set01(direnth HAVE_DIRENT_H) # APR_HAVE_DIRENT_H
+set01(errnoh HAVE_ERRNO_H) # APR_HAVE_ERRNO_H
+set01(fcntlh HAVE_FCNTL_H) # APR_HAVE_FCNTL_H
+set01(ioh HAVE_IO_H) # APR_HAVE_IO_H
+set01(limitsh HAVE_LIMITS_H) # APR_HAVE_LIMITS_H
+set01(netdbh HAVE_NETDB_H) # APR_HAVE_NETDB_H
+set01(netinet_inh HAVE_NETINET_IN_H) # APR_HAVE_NETINET_IN_H
+set01(netinet_sctph HAVE_NETINET_SCTP_H) # APR_HAVE_NETINET_SCTP_H
+set01(netinet_sctp_uioh HAVE_NETINET_SCTP_UIO_H) # APR_HAVE_NETINET_SCTP_UIO_H
+set01(netinet_tcph HAVE_NETINET_TCP_H) # APR_HAVE_NETINET_TCP_H
+set01(processh HAVE_PROCESS_H) # APR_HAVE_PROCESS_H
+set01(pthreadh HAVE_PTHREAD_H) # APR_HAVE_PTHREAD_H
+set01(semaphoreh HAVE_SEMAPHORE_H) # APR_HAVE_SEMAPHORE_H
+set01(signalh HAVE_SIGNAL_H) # APR_HAVE_SIGNAL_H
+set01(stdargh HAVE_STDARG_H) # APR_HAVE_STDARG_H
+set01(stdint HAVE_STDINT_H) # APR_HAVE_STDINT_H
+set01(stdioh HAVE_STDIO_H) # APR_HAVE_STDIO_H
+set01(stdlibh HAVE_STDLIB_H) # APR_HAVE_STDLIB_H
+set01(stringh HAVE_STRING_H) # APR_HAVE_STRING_H
+set01(stringsh HAVE_STRINGS_H) # APR_HAVE_STRINGS_H
+set01(sys_ioctlh HAVE_SYS_IOCTL_H) # APR_HAVE_SYS_IOCTL_H
+set01(sys_sendfileh HAVE_SYS_SENDFILE_H) # APR_HAVE_SYS_SENDFILE_H
+set01(sys_signalh HAVE_SYS_SIGNAL_H) # APR_HAVE_SYS_SIGNAL_H
+set01(sys_socketh HAVE_SYS_SOCKET_H) # APR_HAVE_SYS_SOCKET_H
+set01(sys_sockioh HAVE_SYS_SOCKIO_H) # APR_HAVE_SYS_SOCKIO_H
+set01(sys_syslimitsh HAVE_SYS_SYSLIMITS_H) # APR_HAVE_SYS_SYSLIMITS_H
+set01(sys_timeh HAVE_SYS_TIME_H) # APR_HAVE_SYS_TIME_H
+set01(sys_typesh HAVE_SYS_TYPES_H) # APR_HAVE_SYS_TYPES_H
+set01(sys_uioh HAVE_SYS_UIO_H) # APR_HAVE_SYS_UIO_H
+set01(sys_unh HAVE_SYS_UN_H) # APR_HAVE_SYS_UN_H
+set01(sys_waith HAVE_SYS_WAIT_H) # APR_HAVE_SYS_WAIT_H
+set01(timeh HAVE_TIME_H) # APR_HAVE_TIME_H
+set01(unistdh HAVE_UNISTD_H) # APR_HAVE_UNISTD_H
+set01(windowsh HAVE_WINDOWS_H) # APR_HAVE_WINDOWS_H
+set01(winsock2h HAVE_WINSOCK2_H) # APR_HAVE_WINSOCK2_H
 #####
 set(HAVE_MMAP_TMP HAVE_SYS_MMAN_H AND HAVE_MMAP AND HAVE_MUNMAP)
 set(HAVE_MMAP_SHM HAVE_MMAP_TMP AND HAVE_SHM_OPEN AND HAVE_SHM_UNLINK)
@@ -940,91 +991,110 @@ set(HAVE_SHM_GETANON HAVE_SHM_HEADERS AND HAVE_SHM_FUNCS)
 set(HAVE_SHM_GET HAVE_SHM_HEADERS AND HAVE_SHM_FUNCS)
 set(HAVE_MMAP_ANON HAVE_MMAP_TMP AND HAVE_MAP_ANON)
 set(HAVE_BEOS_AREA FALSE) # no tests in configure
-set01(havemmaptmp HAVE_MMAP_TMP)
-set01(havemmapshm HAVE_MMAP_SHM)
-set01(havemmapzero HAVE_MMAP_ZERO)
-set01(haveshmgetanon HAVE_SHM_GETANON)
-set01(haveshmget HAVE_SHM_GET)
-set01(havemmapanon HAVE_MMAP_ANON)
-set01(havebeosarea HAVE_BEOS_AREA)
+set01(havemmaptmp HAVE_MMAP_TMP) # APR_HAVE_SHMEM_MMAP_TMP
+set01(havemmapshm HAVE_MMAP_SHM) # APR_HAVE_SHMEM_MMAP_SHM
+set01(havemmapzero HAVE_MMAP_ZERO) # APR_HAVE_SHMEM_MMAP_ZERO
+set01(haveshmgetanon HAVE_SHM_GETANON) # APR_HAVE_SHMEM_SHMGET_ANON
+set01(haveshmget HAVE_SHM_GET) # APR_HAVE_SHMEM_SHMGET
+set01(havemmapanon HAVE_MMAP_ANON) # APR_HAVE_SHMEM_MMAP_ANON
+set01(havebeosarea HAVE_BEOS_AREA) # APR_HAVE_SHMEM_BEOS
 #####
-set01(usemmaptmp USE_SHMEM_MMAP_TMP)
-set01(usemmapshm USE_SHMEM_MMAP_SHM)
-set01(usemmapzero USE_SHMEM_MMAP_ZERO)
-set01(useshmgetanon USE_SHMEM_SHMGET_ANON)
-set01(useshmget USE_SHMEM_SHMGET)
-set01(usemmapanon USE_SHMEM_MMAP_ANON)
-set01(usebeosarea USE_SHMEM_BEOS)
+set01(usemmaptmp USE_SHMEM_MMAP_TMP) # APR_USE_SHMEM_MMAP_TMP
+set01(usemmapshm USE_SHMEM_MMAP_SHM) # APR_USE_SHMEM_MMAP_SHM
+set01(usemmapzero USE_SHMEM_MMAP_ZERO) # APR_USE_SHMEM_MMAP_ZERO
+set01(useshmgetanon USE_SHMEM_SHMGET_ANON) # APR_USE_SHMEM_SHMGET_ANON
+set01(useshmget USE_SHMEM_SHMGET) # APR_USE_SHMEM_SHMGET
+set01(usemmapanon USE_SHMEM_MMAP_ANON) # APR_USE_SHMEM_MMAP_ANON
+set01(usebeosarea USE_SHMEM_BEOS) # APR_USE_SHMEM_BEOS
 #####
-set01(flockser USE_FLOCK_SERIALIZE)
-set01(sysvser USE_SYSVSEM_SERIALIZE)
-set01(posixser USE_POSIXSEM_SERIALIZE) # not in configure
-set01(fcntlser USE_FCNTL_SERIALIZE) # in configure, not in apr_private
-set01(procpthreadser USE_PROC_PTHREAD_SERIALIZE) # in configure, not in apr_private
-set01(pthreadser HAVE_PTHREAD_H) # maybe more to do to determine?
+set01(flockser USE_FLOCK_SERIALIZE) # APR_USE_FLOCK_SERIALIZE
+set01(sysvser USE_SYSVSEM_SERIALIZE) # APR_USE_SYSVSEM_SERIALIZE
+set01(posixser USE_POSIXSEM_SERIALIZE) # APR_USE_POSIXSEM_SERIALIZE
+set01(fcntlser USE_FCNTL_SERIALIZE) # APR_USE_FCNTL_SERIALIZE
+set01(procpthreadser USE_PROC_PTHREAD_SERIALIZE) # APR_USE_PROC_PTHREAD_SERIALIZE
+set01(pthreadser HAVE_PTHREAD_H) # APR_USE_PTHREAD_SERIALIZE #TODO: maybe more to do to determine?
 #####
 set(HAS_FLOCK_SER HAVE_FLOCK AND HAVE_LOCK_EX)
 set(HAS_SYSV_SER HAVE_SEMGET AND HAVE_SEMCTL AND HAVE_SEM_UNDO)
 set(HAS_POSIX_SER HAVE_SEMAPHORE_H AND HAVE_SEM_CLOSE AND HAVE_SEM_UNLINK AND HAVE_SEM_POST AND HAVE_SEM_WAIT)
 set(HAS_FCNTL_SER HAVE_FCNTL_H AND HAVE_F_SETLK)
 set(HAS_PROC_PTHREAD_SER HAVE_PTHREAD_H AND HAVE_PTHREAD_PROCESS_SHARED AND HAVE_PTHREAD_MUTEXATTR_SETPSHARED AND EXISTS /dev/zero)
-set01(hasflockser HAS_FLOCK_SER)
-set01(hassysvser HAS_SYSV_SER)
-set01(hasposixser HAS_POSIX_SER)
-set01(hasfcntlser HAS_FCNTL_SER)
-set01(hasprocpthreadser HAS_PROC_PTHREAD_SER)
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set01(hasflockser FALSE) # APR_HAS_FLOCK_SERIALIZE
+else()
+  set01(hasflockser HAS_FLOCK_SER) # APR_HAS_FLOCK_SERIALIZE
+endif()
+set01(hassysvser HAS_SYSV_SER) # APR_HAS_SYSVSEM_SERIALIZE
+set01(hasposixser HAS_POSIX_SER) # APR_HAS_POSIXSEM_SERIALIZE
+set01(hasfcntlser HAS_FCNTL_SER) # APR_HAS_FCNTL_SERIALIZE
+set01(hasprocpthreadser HAS_PROC_PTHREAD_SER) # APR_HAS_PROC_PTHREAD_SERIALIZE
 #####
-set01(proclockglobal FALSE) #TODO: determine
+set01(proclockglobal FALSE) # APR_PROCESS_LOCK_IS_GLOBAL #TODO: determine
 #####
-set01(have_corkable_tcp HAVE_TCP_CORK)
-set01(have_getrlimit HAVE_GETRLIMIT)
-set01(have_in_addr HAVE_IN_ADDR)
-set01(have_inet_addr HAVE_INET_ADDR)
-set01(have_inet_network HAVE_INET_NETWORK)
+set01(have_corkable_tcp HAVE_TCP_CORK) # APR_HAVE_CORKABLE_TCP
+set01(have_getrlimit HAVE_GETRLIMIT) # APR_HAVE_GETRLIMIT
+set01(have_in_addr HAVE_IN_ADDR) # APR_HAVE_IN_ADDR
+set01(have_inet_addr HAVE_INET_ADDR) # APR_HAVE_INET_ADDR
+set01(have_inet_network HAVE_INET_NETWORK) # APR_HAVE_INET_NETWORK
 set(HAVE_IPV6 HAVE_SOCKADDR_IN6 AND HAVE_GETADDRINFO AND HAVE_GETNAMEINFO AND HAVE_GAI_ADDRCONFIG)
-set01(have_ipv6 HAVE_IPV6)
-set01(have_memmove HAVE_MEMMOVE)
-set01(have_setrlimit HAVE_SETRLIMIT)
-set01(have_sigaction HAVE_SIGACTION)
-set01(have_sigsuspend HAVE_SIGSUSPEND)
-set01(have_sigwait HAVE_SIGWAIT)
-set01(have_sa_storage HAVE_SA_STORAGE)
-set01(have_strcasecmp HAVE_STRCASECMP)
-set01(have_strdup HAVE_STRDUP)
-set01(have_stricmp HAVE_STRICMP)
-set01(have_strncasecmp HAVE_STRNCASECMP)
-set01(have_strnicmp HAVE_STRNICMP)
-set01(have_strstr HAVE_STRSTR)
-set01(have_memchr HAVE_MEMCHR)
-set01(struct_rlimit HAVE_STRUCT_RLIMIT)
-set01(have_union_semun HAVE_UNION_SEMUN)
-set01(have_sctp HAVE_SCTP)
-set01(have_iovec HAVE_SIZEOF_STRUCT_IOVEC)
+set01(have_ipv6 HAVE_IPV6) # APR_HAVE_IPV6
+set01(have_memmove HAVE_MEMMOVE) # APR_HAVE_MEMMOVE
+set01(have_setrlimit HAVE_SETRLIMIT) # APR_HAVE_SETRLIMIT
+set01(have_sigaction HAVE_SIGACTION) # APR_HAVE_SIGACTION
+set01(have_sigsuspend HAVE_SIGSUSPEND) # APR_HAVE_SIGSUSPEND
+set01(have_sigwait HAVE_SIGWAIT) # APR_HAVE_SIGWAIT
+set01(have_sa_storage HAVE_SA_STORAGE) # APR_HAVE_SA_STORAGE
+set01(have_strcasecmp HAVE_STRCASECMP) # APR_HAVE_STRCASECMP
+set01(have_strdup HAVE_STRDUP) # APR_HAVE_STRDUP
+set01(have_stricmp HAVE_STRICMP) # APR_HAVE_STRICMP
+set01(have_strncasecmp HAVE_STRNCASECMP) # APR_HAVE_STRNCASECMP
+set01(have_strnicmp HAVE_STRNICMP) # APR_HAVE_STRNICMP
+set01(have_strstr HAVE_STRSTR) # APR_HAVE_STRSTR
+set01(have_memchr HAVE_MEMCHR) # APR_HAVE_MEMCHR
+set01(struct_rlimit HAVE_STRUCT_RLIMIT) # APR_HAVE_STRUCT_RLIMIT
+set01(have_union_semun HAVE_UNION_SEMUN) # APR_HAVE_UNION_SEMUN
+set01(have_sctp HAVE_SCTP) # APR_HAVE_SCTP
+set01(have_iovec HAVE_SIZEOF_STRUCT_IOVEC) # APR_HAVE_IOVEC
 #####
 set(HAVE_SHAREDMEM USE_SHMEM_MMAP_TMP OR USE_SHMEM_MMAP_SHM OR USE_SHMEM_MMAP_ZERO OR USE_SHMEM_SHMGET OR
   USE_SHMEM_MMAP_ANON OR USE_SHMEM_BEOS OR USE_SHMEM_OS2 OR USE_SHMEM_WIN32)
-set01(sharedmem HAVE_SHAREDMEM)
-set01(threads TRUE) #TODO: determine
-set01(sendfile TRUE) #TODO: determine
-set01(mmap TRUE) #TODO: determine
-set01(fork HAVE_FORK)
-set01(rand TRUE) #TODO: determine
-set01(oc TRUE) #TODO: determine
-set01(aprdso DSO_USE_DLFCN OR DSO_USE_SHL OR DSO_USE_DYLD)
-set01(acceptfilter HAVE_SO_ACCEPTFILTER)
-set01(have_unicode_fs FALSE) #TODO: determine
-set01(have_proc_invoked FALSE) #TODO: determine
-set01(apr_has_user TRUE) #TODO: determine
-set01(aprlfs FALSE) #TODO: determine
-set01(apr_has_xthread_files FALSE) #TODO: determine
-set01(osuuid FALSE) #TODO: determine
+set01(sharedmem HAVE_SHAREDMEM) # APR_HAS_SHARED_MEMORY
+set01(threads TRUE) # APR_HAS_THREADS #TODO: determine
+set01(sendfile TRUE) # APR_HAS_SENDFILE #TODO: determine
+set01(mmap TRUE) # APR_HAS_MMAP #TODO: determine
+set01(fork HAVE_FORK) # APR_HAS_FORK
+set01(rand TRUE) # APR_HAS_RANDOM #TODO: determine
+set01(oc TRUE) # APR_HAS_OTHER_CHILD #TODO: determine
+set01(aprdso DSO_USE_DLFCN OR DSO_USE_SHL OR DSO_USE_DYLD) # APR_HAS_DSO
+set01(acceptfilter HAVE_SO_ACCEPTFILTER) # APR_HAS_SO_ACCEPTFILTER
+set01(have_unicode_fs FALSE) # APR_HAS_UNICODE_FS #TODO: determine
+set01(have_proc_invoked FALSE) # APR_HAS_PROC_INVOKED #TODO: determine
+set01(apr_has_user TRUE) # APR_HAS_USER #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set01(aprlfs TRUE) # APR_HAS_LARGE_FILES #TODO: determine
+else()
+  set01(aprlfs FALSE) # APR_HAS_LARGE_FILES #TODO: determine
+endif()
+if(aprlfs)
+  add_definitions(-D_LARGEFILE64_SOURCE)
+endif()
+set01(apr_has_xthread_files FALSE) # APR_HAS_XTHREAD_FILES #TODO: determine
+set01(osuuid FALSE) # APR_HAS_OS_UUID #TODO: determine
 #####
-set01(apr_procattr_user_set_requires_password FALSE) #TODO: determine
-set01(file_as_socket TRUE) #TODO: determine
-set01(apr_charset_ebcdic FALSE) #TODO: determine
-set(apr_tcp_nopush_flag TCP_CORK) #TODO: determine
-set01(tcp_nodelay_inherited TRUE) #TODO: determine
-set01(o_nonblock_inherited FALSE) #TODO: determine
+set01(apr_procattr_user_set_requires_password FALSE) # APR_PROCATTR_USER_SET_REQUIRES_PASSWORD #TODO: determine
+set01(file_as_socket TRUE) # APR_FILES_AS_SOCKETS #TODO: determine
+set01(apr_charset_ebcdic FALSE) # APR_CHARSET_EBCDIC #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set(apr_tcp_nopush_flag 0) # APR_TCP_NOPUSH_FLAG #TODO: determine
+else()
+  set(apr_tcp_nopush_flag TCP_CORK) # APR_TCP_NOPUSH_FLAG #TODO: determine
+endif()
+set01(tcp_nodelay_inherited TRUE) # APR_TCP_NODELAY_INHERITED #TODO: determine
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  set01(o_nonblock_inherited TRUE) # APR_O_NONBLOCK_INHERITED #TODO: determine
+else()
+  set01(o_nonblock_inherited FALSE) # APR_O_NONBLOCK_INHERITED #TODO: determine
+endif()
 #####
 if(SIZEOF_SHORT EQUAL 2)
   set(short_value short)
@@ -1036,7 +1106,7 @@ if(SIZEOF_INT EQUAL 4)
 else()
   set(int_value unknown)
 endif()
-set(voidp_size ${SIZEOF_VOIDP})
+set(voidp_size ${SIZEOF_VOIDP}) # APR_SIZEOF_VOIDP
 if(SIZEOF_INT EQUAL 8)
   set(int64_literal "#define APR_INT64_C(val) (val)")
   set(uint64_literal "#define APR_UINT64_C(val) (val##U)")
@@ -1077,9 +1147,9 @@ if(HAVE_INT64_C_DEFINED)
   set(uint64_literal "#define APR_UINT64_C(val) UINT64_C(val)")
 endif()
 #####
-set01(bigendian WORDS_BIGENDIAN)
+set01(bigendian WORDS_BIGENDIAN) # APR_IS_BIGENDIAN
 #####
-set(apr_thread_func) # TODO: handle case where it should be set to __stdcall
+set(apr_thread_func) # APR_THREAD_FUNC # TODO: handle case where it should be set to __stdcall
 ###
 if(${CMAKE_SYSTEM_NAME} STREQUAL SOME_PLATFORM) # TODO: handle other cases
   # where SOME_PLATFORM matches results from CMakeDetermineSystem.cmake:
@@ -1118,13 +1188,13 @@ else()
   message(FATAL_ERROR "could not determine APR_PID_T_FMT")
 endif()
 #####
-set01(proc_mutex_is_global FALSE) #TODO: determine
+set01(proc_mutex_is_global FALSE) # APR_PROC_MUTEX_IS_GLOBAL #TODO: determine
 if(MINGW OR OS2) #TODO: verify OS2 is a cmake variable
   set(eolstr \\r\\n)
   #set(shlibpath_var) #TODO: handle cases where it isn't LD_LIBRARY_PATH
 else()
-  set(eolstr \\n)
-  set(shlibpath_var LD_LIBRARY_PATH)
+  set(eolstr \\n) # APR_EOL_STR
+  set(shlibpath_var LD_LIBRARY_PATH) # APR_DSOPATH
 endif()
 configure_file(${CMAKE_SOURCE_DIR}/include/apr.h.in apr.h)
 ##########
@@ -1133,4 +1203,8 @@ set(CMAKE_REQUIRED_DEFINITIONS)
 add_definitions(-DHAVE_CONFIG_H)
 if(UNIX)
   add_definitions(-DCMAKE_UNIX)
+endif()
+if(${CMAKE_SYSTEM_NAME} STREQUAL SunOS)
+  string(REGEX REPLACE "([0-9]+)\\.([0-9]+)" "\\2" SOL_VER ${CMAKE_SYSTEM_VERSION})
+  add_definitions(-DSOLARIS2=${SOL_VER})
 endif()

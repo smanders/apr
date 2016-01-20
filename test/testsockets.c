@@ -228,7 +228,9 @@ abts_suite *testsockets(abts_suite *suite)
     abts_run_test(suite, tcp6_socket, NULL);
     abts_run_test(suite, udp6_socket, NULL);
 
+#if !defined __sun
     abts_run_test(suite, sendto_receivefrom6, NULL);
+#endif
 #endif
 
     abts_run_test(suite, socket_userdata, NULL);
