@@ -352,6 +352,11 @@ SET(APR_TEST_SOURCES
   test/testvsn.c
 )
 
+IF(DEFINED APR_VER)
+  set(ver _${APR_VER})
+  set(verDir /apr${ver})
+ENDIF()
+
 SET(install_targets)
 SET(install_bin_pdb)
 
@@ -377,6 +382,7 @@ SET_TARGET_PROPERTIES(apr-1 PROPERTIES COMPILE_DEFINITIONS "APR_DECLARE_STATIC;W
 elseif(UNIX)
 SET_TARGET_PROPERTIES(apr-1 PROPERTIES COMPILE_DEFINITIONS "APR_DECLARE_STATIC")
 endif()
+SET_TARGET_PROPERTIES(apr-1 PROPERTIES OUTPUT_NAME apr-1${ver})
 ADD_DEPENDENCIES(apr-1 test_char_header)
 
 if(WIN32)
@@ -507,12 +513,13 @@ ENDIF (APR_BUILD_TESTAPR)
 
 # Installation
 
-INSTALL(TARGETS ${install_targets} EXPORT apr-targets
+SET(targetsFile apr${ver}-targets)
+INSTALL(TARGETS ${install_targets} EXPORT ${targetsFile}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
        )
-INSTALL(EXPORT apr-targets DESTINATION lib/cmake)
+INSTALL(EXPORT ${targetsFile} DESTINATION lib/cmake)
 
 IF(INSTALL_PDB)
   INSTALL(FILES ${install_bin_pdb}
@@ -520,7 +527,8 @@ IF(INSTALL_PDB)
           CONFIGURATIONS RelWithDebInfo Debug)
 ENDIF()
 
-INSTALL(FILES ${APR_PUBLIC_HEADERS_STATIC} ${APR_PUBLIC_HEADERS_GENERATED} DESTINATION include/apr)
+SET(includeDir include${verDir}/apr)
+INSTALL(FILES ${APR_PUBLIC_HEADERS_STATIC} ${APR_PUBLIC_HEADERS_GENERATED} DESTINATION ${includeDir})
 IF(APR_INSTALL_PRIVATE_H)
   # Kludges for unexpected dependencies of httpd 2.x, not installed by default
   SET(APR_PRIVATE_H_FOR_HTTPD
@@ -529,8 +537,8 @@ IF(APR_INSTALL_PRIVATE_H)
     include/arch/win32/apr_arch_utf8.h
     include/arch/win32/apr_private.h
     )
-  INSTALL(FILES ${APR_PRIVATE_H_FOR_HTTPD} DESTINATION include/apr/arch/win32)
-  INSTALL(FILES include/arch/apr_private_common.h DESTINATION include/apr/arch)
+  INSTALL(FILES ${APR_PRIVATE_H_FOR_HTTPD} DESTINATION ${includeDir}/arch/win32)
+  INSTALL(FILES include/arch/apr_private_common.h DESTINATION ${includeDir}/arch)
 ENDIF()
 
 STRING(TOUPPER "${CMAKE_BUILD_TYPE}" buildtype)
