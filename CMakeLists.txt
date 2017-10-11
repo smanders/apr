@@ -396,6 +396,7 @@ endif()
 ADD_LIBRARY(aprapp-1 STATIC misc/win32/apr_app.c misc/win32/internal.c ${APR_PUBLIC_HEADERS_GENERATED})
 SET(install_targets ${install_targets} aprapp-1)
 SET_TARGET_PROPERTIES(aprapp-1 PROPERTIES COMPILE_DEFINITIONS "APR_DECLARE_STATIC;APR_APP;WINNT")
+SET_TARGET_PROPERTIES(aprapp-1 PROPERTIES OUTPUT_NAME aprapp-1${ver})
 endif(WIN32)
 
 IF(APR_BUILD_TESTAPR)
